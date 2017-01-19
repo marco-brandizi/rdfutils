@@ -1,0 +1,109 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>info.marcobrandizi</groupId>
+  <artifactId>rdfutils</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <name>rdfutils</name>
+  <url>TODO</url>
+  <description>TODO</description>
+ 
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+    
+	<build>
+		<plugins>
+		
+      <plugin>
+	      <artifactId>maven-compiler-plugin</artifactId>
+	      <configuration>
+	        <source>1.8</source>
+	        <target>1.8</target>
+	        <encoding>utf-8</encoding>
+	      </configuration>
+	    </plugin>
+	
+	    <plugin>
+		    <artifactId>maven-source-plugin</artifactId>
+		    <executions>
+		      <execution>
+		        <id>attach-source</id>
+		        <goals>
+		          <goal>jar</goal>
+		        </goals>
+		      </execution>
+		    </executions>
+	    </plugin>
+
+		  <plugin>
+		    <groupId>org.apache.maven.plugins</groupId>
+		    <artifactId>maven-surefire-plugin</artifactId>
+		    <configuration>
+		      <properties>
+		        <property>
+		        	<!-- Prints out spaces and test name before/after every test method and automatically -->
+		          <name>listener</name>
+		          <value>uk.ac.ebi.utils.test.junit.TestOutputDecorator</value>
+		        </property>
+		       </properties>
+		    </configuration>
+		  </plugin>
+		
+    </plugins>
+	
+    <testResources>
+	    <testResource>
+	      <directory>src/test/resources</directory>
+	      <filtering>true</filtering>
+	    </testResource>
+    </testResources>
+
+    <resources>
+	    <resource>
+	      <directory>src/main/resources</directory>
+	      <filtering>true</filtering>
+	    </resource>
+    </resources>
+        
+	</build>
+	
+	
+  <repositories>
+
+		<!-- jutils -->
+		<repository>
+	    <id>EBIBioSamples-GH-repo</id>
+	    <url>https://raw.githubusercontent.com/EBIBioSamples/EBIBioSamples.github.io/maven-repo</url>
+	    <snapshots>
+        <enabled>true</enabled>
+	    </snapshots>
+    </repository>
+		
+  </repositories>
+
+
+	<distributionManagement>
+
+    <snapshotRepository>
+    	<id>marcobrandizi.info/local-snapshots</id>
+			<url>http://www.marcobrandizi.info:8081/artifactory/maven</url>
+    </snapshotRepository>
+
+    <repository>
+    	<id>marcobrandizi.info/local-snapshots</id>
+			<url>http://www.marcobrandizi.info:8081/artifactory/maven</url>
+    </repository>
+		
+	</distributionManagement>
+
+
+  <modules>
+    <module>rdfutils-core</module>
+    <module>rdfutils-jena</module>
+  </modules>
+  	  
+</project>
