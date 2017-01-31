@@ -80,4 +80,15 @@ public class NamespaceUtils
 			result.append ( String.format ( "PREFIX %s: <%s>\n", nse.getKey (), nse.getValue () ) );
 		return result.toString ();
 	}
+	
+	/**
+	 * Builds a list of @prefix directives that are compatible with Turtle/N3 syntax
+	 */
+	public static String asTurtleProlog ()
+	{
+		StringBuilder result = new StringBuilder ();
+		for ( Entry<String, String> nse: getNamespaces ().entrySet () )
+			result.append ( String.format ( "@prefix %s: <%s>.\n", nse.getKey (), nse.getValue () ) );
+		return result.toString ();
+	}
 }
