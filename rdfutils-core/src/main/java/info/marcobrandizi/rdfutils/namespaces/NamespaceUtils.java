@@ -13,6 +13,9 @@ import org.apache.commons.lang3.Validate;
  * <p>A utility class that basically has the purpose of keeping a map from prefixes to namespaces and return the namespace
  * corresponding to a prefix. You can expand the set of predefined namespaces by using {@link #registerNs(String, String)}.</p>
  * 
+ * <p>At the moment, you can have new namespaces loaded into this automatically, by implementing {@link Namespaces}
+ * and using the SPI mechanism</p>
+ * 
  * <p>TODO: Indeed, we can do much better by loading namespace defs from an RDF file.</p> 
  *
  * <dl><dt>date</dt><dd>Apr 23, 2013</dd></dl>
@@ -27,6 +30,7 @@ public class NamespaceUtils
 	{
 		NAMESPACES = new HashMap<String, String> ();
 		
+		// So, let's go with the service loader as usually
 		for ( Namespaces nss: ServiceLoader.load ( Namespaces.class ) )
 			nss.getNamespaces ().forEach ( ( prefix, ns )  -> registerNs ( prefix, ns ) );
 	}
