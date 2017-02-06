@@ -89,12 +89,12 @@
 	<distributionManagement>
 
     <snapshotRepository>
-    	<id>marcobrandizi.info/local-snapshots</id>
+    	<id>marcobrandizi.info</id>
 			<url>http://www.marcobrandizi.info:8081/artifactory/maven</url>
     </snapshotRepository>
 
     <repository>
-    	<id>marcobrandizi.info/local-snapshots</id>
+    	<id>marcobrandizi.info</id>
 			<url>http://www.marcobrandizi.info:8081/artifactory/maven</url>
     </repository>
 		

@@ -87,5 +87,4 @@ public interface GraphUtils<M,N,R,P,L>
 			}
 		});
 	}
-
 }
