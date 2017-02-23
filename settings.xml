@@ -2,8 +2,8 @@
   <servers>
     <server>
       <id>marcobrandizi.info</id>
-      <username>${env.repo_user}</username>
-      <password>${env.repo_pwd}</password>
+      <username>${env.REPO_USER}</username>
+      <password>${env.REPO_PWD}</password>
     </server>
   </servers>
 </settings>
