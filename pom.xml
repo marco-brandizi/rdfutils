@@ -4,19 +4,19 @@
 
   <groupId>info.marcobrandizi</groupId>
   <artifactId>rdfutils</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0RC1</version>
   <packaging>pom</packaging>
 
   <name>rdfutils</name>
-  <url>TODO</url>
-  <description>TODO</description>
+  <url>https://github.com/marco-brandizi/rdfutils</url>
+  <description>Utilities to manage RDF and RDF frameworks</description>
  
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
     
   <scm>
-  	<connection>https://github.com/marco-brandizi/rdfutils.git</connection>
+  	<connection>scm:git:https://github.com/marco-brandizi/rdfutils.git</connection>
   	<url>https://github.com/marco-brandizi/rdfutils</url>
   </scm>
   

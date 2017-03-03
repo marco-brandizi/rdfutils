@@ -5,13 +5,13 @@
 	<parent>
 	  <groupId>info.marcobrandizi</groupId>
 	  <artifactId>rdfutils</artifactId>
-	  <version>1.0-SNAPSHOT</version>
+	  <version>1.0RC1</version>
 	</parent>
 
 	<artifactId>rdfutils-jena</artifactId>
 
   <name>rdfutils-jena</name>
-  <url>TODO</url>
+  <url>https://github.com/marco-brandizi/rdfutils</url>
  
   <dependencies>
 
