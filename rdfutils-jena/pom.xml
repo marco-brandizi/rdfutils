@@ -5,13 +5,14 @@
 	<parent>
 	  <groupId>info.marcobrandizi</groupId>
 	  <artifactId>rdfutils</artifactId>
-	  <version>1.0RC1</version>
+	  <version>1.0.1-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>rdfutils-jena</artifactId>
 
   <name>rdfutils-jena</name>
   <url>https://github.com/marco-brandizi/rdfutils</url>
+	<description>The Jena-specific implementation of Jena Utils</description>
  
   <dependencies>
 
