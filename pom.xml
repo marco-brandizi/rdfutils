@@ -15,6 +15,11 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
     
+  <scm>
+  	<connection>https://github.com/marco-brandizi/rdfutils.git</connection>
+  	<url>https://github.com/marco-brandizi/rdfutils</url>
+  </scm>
+  
 	<build>
 		<plugins>
 		
