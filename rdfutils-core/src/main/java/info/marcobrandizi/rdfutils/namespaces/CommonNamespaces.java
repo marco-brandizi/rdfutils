@@ -14,6 +14,7 @@ import java.util.Map;
 public class CommonNamespaces implements Namespaces
 {
 
+	@SuppressWarnings ( "serial" )
 	@Override
 	public Map<String, String> getNamespaces ()
 	{

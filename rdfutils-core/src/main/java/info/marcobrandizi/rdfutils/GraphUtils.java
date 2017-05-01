@@ -71,6 +71,13 @@ public interface GraphUtils<M,N,R,P,L>
 	 */
 	public <T> Optional<T> literal2Value ( N literal, Function<String, T> converter );
 
+	/**
+	 * Returns the literal that is achieved from type N (e.g., the lexical form) as-is, without conversions
+	 */
+	public default Optional<String> literal2Value ( N literal ) {
+		return literal2Value ( literal, Function.identity () );
+	}
+	
 	public default Optional<Double> literal2Double ( N literal ) {
 		return literal2Value ( literal, Doubles::tryParse );
 	}
