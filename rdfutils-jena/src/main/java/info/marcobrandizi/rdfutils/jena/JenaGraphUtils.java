@@ -1,7 +1,11 @@
 package info.marcobrandizi.rdfutils.jena;
 
 import java.util.Optional;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.function.Function;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.apache.jena.rdf.model.Literal;
 import org.apache.jena.rdf.model.Model;
@@ -9,6 +13,7 @@ import org.apache.jena.rdf.model.NodeIterator;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.util.iterator.ExtendedIterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,6 +86,24 @@ public class JenaGraphUtils implements GraphUtils<Model, RDFNode, Resource, Prop
 	{
 		if ( literal == null || !literal.canAs ( Literal.class ) ) return Optional.empty ();
 		return Optional.ofNullable ( literal.asLiteral ().getLexicalForm () ).map ( converter );
+	}
+
+	public <T> Stream<T> toStream ( ExtendedIterator<T> extendedIterator, boolean isParallel, int splitIteratorType  )
+	{
+		return StreamSupport.stream ( 
+			Spliterators.spliteratorUnknownSize ( extendedIterator, splitIteratorType ),
+			isParallel
+		);		
+	}
+
+	public <T> Stream<T> toStream ( ExtendedIterator<T> extendedIterator, boolean isParallel )
+	{
+		return toStream ( extendedIterator, isParallel, Spliterator.IMMUTABLE );
+	}
+	
+	public <T> Stream<T> toStream ( ExtendedIterator<T> extendedIterator )
+	{
+		return toStream ( extendedIterator, false );
 	}
 
 }
