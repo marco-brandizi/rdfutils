@@ -96,11 +96,17 @@ public class JenaGraphUtils implements GraphUtils<Model, RDFNode, Resource, Prop
 		);		
 	}
 
+	/**
+	 * Defaults to {@link Spliterator#IMMUTABLE}.
+	 */
 	public <T> Stream<T> toStream ( ExtendedIterator<T> extendedIterator, boolean isParallel )
 	{
 		return toStream ( extendedIterator, isParallel, Spliterator.IMMUTABLE );
 	}
 	
+	/**
+	 * Defaults to false
+	 */
 	public <T> Stream<T> toStream ( ExtendedIterator<T> extendedIterator )
 	{
 		return toStream ( extendedIterator, false );
