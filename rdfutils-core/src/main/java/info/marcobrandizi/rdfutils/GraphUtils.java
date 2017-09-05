@@ -65,8 +65,8 @@ public interface GraphUtils<M,N,R,P,L>
 	 * Facility to convert a literal value into a custom value, using the converter parameter.
 	 * Does this safely, it returns an empty optional if the node parameter is null, or is not a literal node.
 	 * 
-	 * @param converter can assume the received string is non-null, but must not assume it is syntactic valid, nor that 
-	 * extra boundary spaces are trimmed. 
+	 * @param converter can assume the received string is non-null, but must not assume it is syntactically valid, nor 
+	 * that extra boundary spaces are trimmed. 
 	 * 
 	 */
 	public <T> Optional<T> literal2Value ( N literal, Function<String, T> converter );
@@ -93,5 +93,9 @@ public interface GraphUtils<M,N,R,P,L>
 				return null;
 			}
 		});
+	}
+	
+	public default Optional<Boolean> literal2Boolean ( N literal ) {
+		return literal2Value ( literal, Boolean::parseBoolean );
 	}
 }
