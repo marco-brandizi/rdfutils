@@ -3,8 +3,8 @@ package info.marcobrandizi.rdfutils.namespaces;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ServiceLoader;
 import java.util.Map.Entry;
+import java.util.ServiceLoader;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
