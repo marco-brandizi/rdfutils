@@ -4,7 +4,7 @@
 
   <groupId>info.marcobrandizi</groupId>
   <artifactId>rdfutils</artifactId>
-  <version>1.0-Archived</version>
+  <version>1.0-RC2</version>
   <packaging>pom</packaging>
 
   <name>rdfutils</name>
