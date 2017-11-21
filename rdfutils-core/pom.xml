@@ -5,7 +5,7 @@
 	<parent>
 	  <groupId>info.marcobrandizi</groupId>
 	  <artifactId>rdfutils</artifactId>
-	  <version>1.0.1-SNAPSHOT</version>
+	  <version>1.0-Archived</version>
 	</parent>
 
 	<artifactId>rdfutils-core</artifactId>
