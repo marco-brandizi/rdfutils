@@ -109,7 +109,7 @@
   <modules>
     <module>rdfutils-core</module>
     <module>rdfutils-jena</module>
-    <!--  module>rdfutils-owlapi</module -->
+    <module>rdfutils-owlapi</module>
   </modules>
   	  
 </project>
