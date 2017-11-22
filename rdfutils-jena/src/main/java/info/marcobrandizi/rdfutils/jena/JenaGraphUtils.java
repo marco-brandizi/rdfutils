@@ -14,8 +14,6 @@ import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.util.iterator.ExtendedIterator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import info.marcobrandizi.rdfutils.GraphUtils;
 import uk.ac.ebi.utils.exceptions.TooManyValuesException;
@@ -27,12 +25,10 @@ import uk.ac.ebi.utils.exceptions.TooManyValuesException;
  * <dl><dt>Date:</dt><dd>17 Jan 2017</dd></dl>
  *
  */
-public class JenaGraphUtils implements GraphUtils<Model, RDFNode, Resource, Property, Literal>
+public class JenaGraphUtils extends GraphUtils<Model, RDFNode, Resource, Property, Literal>
 {
 	public static final JenaGraphUtils JENAUTILS = new JenaGraphUtils ();
 	
-	private static Logger log = LoggerFactory.getLogger ( JenaGraphUtils.class );
-
 	@Override
 	public Optional<RDFNode> getObject ( Model m, String suri, String puri, boolean errorIfMultiple )
 	{
@@ -59,6 +55,7 @@ public class JenaGraphUtils implements GraphUtils<Model, RDFNode, Resource, Prop
 		Model m, String suri, String puri, String lexValue 
 	)
 	{
+		this.checkNonNullTriple ( "assertLiteral", suri, puri, lexValue, "literal" );
 		m.add ( m.createResource ( suri ), m.createProperty ( puri ), m.createLiteral ( lexValue ) );
 		return this;
 	}
@@ -68,6 +65,7 @@ public class JenaGraphUtils implements GraphUtils<Model, RDFNode, Resource, Prop
 		Model m, String suri, String puri, Literal literal 
 	)
 	{
+		this.checkNonNullTriple ( "assertLiteral", suri, puri, literal );
 		m.add ( m.createResource ( suri ), m.createProperty ( puri ), literal );
 		return this;
 	}
@@ -77,6 +75,7 @@ public class JenaGraphUtils implements GraphUtils<Model, RDFNode, Resource, Prop
 		Model m, String suri, String puri, String ouri 
 	)
 	{
+		this.checkNonNullTriple ( "assertLiteral", suri, puri, ouri, "resource" );		
 		m.add ( m.createResource ( suri ), m.createProperty ( puri ), m.createResource ( ouri ) );
 		return this;
 	}
@@ -111,5 +110,14 @@ public class JenaGraphUtils implements GraphUtils<Model, RDFNode, Resource, Prop
 	{
 		return toStream ( extendedIterator, false );
 	}
-
+	
+	public void checkNonNullTriple ( String methodName, String subjectUri, String propertyUri, RDFNode obj )
+	{
+		String dataTypeStr = null; 
+		if ( obj != null )
+			dataTypeStr = obj instanceof Literal ? obj.asLiteral ().getDatatypeURI () : obj.getClass ().getSimpleName ();
+			
+		this.checkNonNullTriple ( methodName, subjectUri, propertyUri, obj == null ? null : obj.toString (), dataTypeStr );
+	}
+	
 }
