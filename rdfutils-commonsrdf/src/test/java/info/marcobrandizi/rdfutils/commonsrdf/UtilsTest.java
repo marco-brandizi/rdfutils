@@ -28,7 +28,7 @@ public class UtilsTest
 {
 	static {
 		NamespaceUtils.registerNs ( "foo", "http://www.findme.net/test/" );
-		COMMUTILS.setRDF ( new JenaRDF () );
+		//COMMUTILS.setRDF ( new JenaRDF () );
 	}
 	
 	
