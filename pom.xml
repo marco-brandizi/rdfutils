@@ -13,12 +13,43 @@
  
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <jena.version>3.5.0</jena.version>
   </properties>
     
   <scm>
   	<connection>scm:git:https://github.com/marco-brandizi/rdfutils.git</connection>
   	<url>https://github.com/marco-brandizi/rdfutils</url>
   </scm>
+  
+  <dependencyManagement>
+  
+	  <dependencies>
+
+			<dependency>
+			  <groupId>org.apache.jena</groupId>
+			  <artifactId>apache-jena-libs</artifactId>
+			  <version>${jena.version}</version>
+			  <type>pom</type>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.apache.jena</groupId>
+				<artifactId>jena-osgi</artifactId>
+			  <version>${jena.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+				<version>0.9.29</version>
+		    <scope>test</scope>
+			</dependency>
+
+	  </dependencies>
+    
+  
+  
+  </dependencyManagement>
   
 	<build>
 		<plugins>
@@ -109,6 +140,7 @@
   <modules>
     <module>rdfutils-core</module>
     <module>rdfutils-jena</module>
+		<module>rdfutils-commonsrdf</module>
   </modules>
   	  
 </project>

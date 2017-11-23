@@ -1,7 +1,7 @@
 # Revision History
 
 ## 2.0-SNAPSHOT
-  * OWLAPI module added.
+  * Module for Apache Commons RDF added.
 
 ## 1.0
   * Created
