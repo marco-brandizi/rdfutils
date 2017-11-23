@@ -44,14 +44,28 @@ public class CommonsRDFUtils extends GraphUtils<Graph, RDFTerm, BlankNodeOrIRI, 
 		ServiceLoader<RDF> loader = ServiceLoader.load ( RDF.class );
 		Iterator<RDF> itr = loader.iterator();
 		
-		if ( !itr.hasNext () ) throw new RdfException (
-			"No implementation found for Commons RDF, please, review your dependencies/classpath"
-		);
+		String noInstAvalMsg = "No implementation found for Commons RDF, please, review your dependencies/classpath";
+		if ( !itr.hasNext () ) throw new RdfException ( noInstAvalMsg );
+
 		defaultRdf = itr.next();
-		if ( itr.hasNext () ) log.warn ( 
-			"More than one RDF instance available for Commons RDF, taking the first one ({})", 
-			itr.next ().getClass ().getName () 
+		
+		String simpleFQN = "org.apache.commons.rdf.simple.SimpleRDF";
+		
+		// This is wrongly included in other implementations (https://issues.apache.org/jira/browse/COMMONSRDF-73)
+		// and we're not interested in it, so let's skip it and try to move to the next.
+		if ( simpleFQN.equals ( defaultRdf.getClass ().getName () ) )
+		{
+			if ( !itr.hasNext () ) throw new RdfException ( 
+				noInstAvalMsg + "(SimpleRDF is ignored by default, you must set up it with setRDF())" 
+			);
+			defaultRdf = itr.next ();
+		}
+		
+		if ( itr.hasNext () && !simpleFQN.equals ( itr.next ().getClass ().getName () ) ) log.warn ( 
+			"More than one RDF instance available for Commons RDF, taking the first one ({})",  defaultRdf 
 		);	
+		else
+			log.info ( "RDF Utils configured with {}", defaultRdf.getClass ().getName () );
 		
 		return defaultRdf;
 	}
