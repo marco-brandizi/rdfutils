@@ -16,7 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import info.marcobrandizi.rdfutils.GraphUtils;
-import info.marcobrandizi.rdfutils.XsdMapper;
 import info.marcobrandizi.rdfutils.exceptions.RdfException;
 import uk.ac.ebi.utils.exceptions.TooManyValuesException;
 
@@ -163,22 +162,25 @@ public class CommonsRDFUtils extends GraphUtils<Graph, RDFTerm, BlankNodeOrIRI, 
 		return getRDF ().createIRI ( puri );
 	}
 
+	
 	@Override
-	public <T> Optional<Literal> value2Literal ( Graph m, T value )
+	public Optional<Literal> value2TypedLiteral ( Graph m, String lexValue, String typeUri )
 	{
 		RDF rdf = getRDF ();
-		
-		return value == null 
+		return lexValue == null 
 			? Optional.empty () 
 			: Optional.ofNullable ( 
-				  rdf.createLiteral ( value.toString (), rdf.createIRI ( XsdMapper.dataTypeIri ( value ) ) ) 
+				  rdf.createLiteral ( lexValue, rdf.createIRI ( typeUri ) ) 
 			);
 	}
+	
 
 	@Override
 	public Optional<Literal> value2Literal ( Graph m, String value, String lang )
 	{
-		return value == null ? Optional.empty () : Optional.of ( getRDF ().createLiteral ( value, lang ) );
+		return value == null 
+			? Optional.empty () 
+			: Optional.of ( lang == null ? getRDF ().createLiteral ( value ) : getRDF ().createLiteral ( value, lang ) );
 	}
 	
 	@Override

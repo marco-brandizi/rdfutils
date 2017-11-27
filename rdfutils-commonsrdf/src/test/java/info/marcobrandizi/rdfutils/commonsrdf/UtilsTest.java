@@ -10,9 +10,7 @@ import java.util.Optional;
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
-import org.apache.commons.rdf.api.RDF;
 import org.apache.commons.rdf.api.RDFTerm;
-import org.apache.commons.rdf.jena.JenaRDF;
 import org.junit.Test;
 
 import info.marcobrandizi.rdfutils.namespaces.NamespaceUtils;
@@ -28,7 +26,6 @@ public class UtilsTest
 {
 	static {
 		NamespaceUtils.registerNs ( "foo", "http://www.findme.net/test/" );
-		//COMMUTILS.setRDF ( new JenaRDF () );
 	}
 	
 	
@@ -37,7 +34,7 @@ public class UtilsTest
 	{
 		Graph g = COMMUTILS.getRDF ().createGraph ();
 				
-		COMMUTILS.assertLiteral ( g, iri ( "foo:alice" ), iri ( "foo:hasAge" ), COMMUTILS.value2Literal ( g, 30 ).get () );
+		COMMUTILS.assertLiteral ( g, iri ( "foo:alice" ), iri ( "foo:hasAge" ), COMMUTILS.value2TypedLiteral ( g, 30 ).get () );
 		
 		BlankNodeOrIRI alice = COMMUTILS.uri2Resource ( g, iri ( "foo:alice" ) );
 		IRI hasAge = COMMUTILS.uri2Property ( g, iri ( "foo:hasAge" ) );

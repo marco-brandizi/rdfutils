@@ -134,18 +134,32 @@ public abstract class GraphUtils<M, N, R extends N, P extends N, L extends N>
 		return literal2Value ( literal, Boolean::parseBoolean );
 	}
 	
-	public <T> Optional<L> value2Literal ( M graphModel, String value, Function<String, T> converter ) {
-		return value2Literal ( graphModel, converter.apply ( value ) );
-	}
+	public abstract Optional<L> value2Literal ( M graphModel, String lexValue, String lang );
+	public abstract Optional<L> value2TypedLiteral ( M graphModel, String lexValue, String typeUri );
 
-	public Optional<L> value2Literal ( M graphModel, String value ) {
-		return this.value2Literal ( graphModel, value, Function.identity () );
+	public Optional<L> value2Literal ( M graphModel, String lexValue ) {
+		return this.value2Literal ( graphModel, lexValue, (String) null );
 	}
 	
-	public abstract Optional<L> value2Literal ( M graphModel, String value, String lang );
+	public <T> Optional<L> value2Literal ( M graphModel, T value, Function<T, String> toLexValueCvt, String lang ) {
+		return value2Literal ( graphModel, toLexValueCvt.apply ( value ), lang );
+	}
 
+	public <T> Optional<L> value2Literal ( M graphModel, T value, Function<T, String> toLexValueCvt ) {
+		return value2Literal ( graphModel, value, toLexValueCvt, null );
+	}
 	
-	public abstract <T> Optional<L> value2Literal ( M graphModel, T value );
+	public <T> Optional<L> value2TypedLiteral ( M graphModel, T value, Function<T, String> toLexValueCvt, String typeUri ) {
+		return value2TypedLiteral ( graphModel, toLexValueCvt.apply ( value ), typeUri );
+	}
+
+	public <T> Optional<L> value2TypedLiteral ( M graphModel, T value, Function<T, String> toLexValueCvt ) {
+		return this.value2TypedLiteral ( graphModel, toLexValueCvt.apply ( value ), XsdMapper.dataTypeIri ( value ) );
+	}
+
+	public <T> Optional<L> value2TypedLiteral ( M graphModel, T value ) {
+		return this.value2TypedLiteral ( graphModel, value, Object::toString );
+	}
 	
 	public abstract Optional<String> literalDataType ( L literal );
 

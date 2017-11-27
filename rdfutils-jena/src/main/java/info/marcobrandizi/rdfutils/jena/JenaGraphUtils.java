@@ -87,9 +87,17 @@ public class JenaGraphUtils extends GraphUtils<Model, RDFNode, Resource, Propert
 	public Property uri2Property ( Model m, String puri ) {
 		return doWrite ( m, () -> m.createProperty ( puri ) );
 	}
-
+	
 	@Override
-	public <T> Optional<Literal> value2Literal ( Model m, T value )
+	public Optional<Literal> value2TypedLiteral ( Model m, String lexValue, String typeUri )
+	{
+		if ( lexValue == null ) return Optional.empty ();
+		return Optional.of ( m.createTypedLiteral ( lexValue, typeUri ) );
+	}
+
+	
+	@Override
+	public <T> Optional<Literal> value2TypedLiteral ( Model m, T value )
 	{
 		return value == null 
 			? Optional.empty () : 
@@ -97,11 +105,15 @@ public class JenaGraphUtils extends GraphUtils<Model, RDFNode, Resource, Propert
 	}
 	
 	@Override
-	public Optional<Literal> value2Literal ( Model m, String value, String lang )
+	public Optional<Literal> value2Literal ( Model m, String lexValue, String lang )
 	{
-		return value == null 
+		return lexValue == null 
 			? Optional.empty () 
-			: Optional.of ( doWrite ( m, () -> m.createLiteral ( value, lang ) ) );
+			: Optional.of ( 
+					doWrite (
+						m, 
+						() -> lang == null ? m.createLiteral ( lexValue ) : m.createLiteral ( lexValue, lang ) ) 
+			);
 	}
 
 
