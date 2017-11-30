@@ -16,9 +16,7 @@ import uk.ac.ebi.utils.exceptions.TooManyValuesException;
 
 /**
  * Misc utils to access graph functions of an RDF graph implementer (e.g., Jena, Sesame).
- * 
- * TODO: more comments.
- *
+ *  
  * @author brandizi
  * <dl><dt>Date:</dt><dd>17 Jan 2017</dd></dl>
  *
@@ -40,7 +38,7 @@ public abstract class GraphUtils<M, N, R extends N, P extends N, L extends N>
 	}
 
 	/**
-	 * @throws TooManyValuesException, if there are more than value for this subject/property.  
+	 * @see #getObject(Object, Object, Object, boolean) 
 	 */
 	public Optional<N> getObject ( M graphModel, String suri, String puri, boolean errorIfMultiple ) {
 		return getObject ( graphModel, uri2Resource ( graphModel, suri ), uri2Property ( graphModel, puri ), errorIfMultiple );
@@ -48,7 +46,11 @@ public abstract class GraphUtils<M, N, R extends N, P extends N, L extends N>
 	
 	
 	/**
-	 * @throws TooManyValuesException, if there are more than value for this subject/property.  
+	 * Gives the value of a subject/property in the graphModel. This might be explicit or inferred, depending
+	 * on the model. 
+	 * 
+	 * @throws TooManyValuesException, if there are more than value for this subject/property and errorIfMultiple
+	 * is true. Without this flag on, if multiple values for this subject/property are available, returns any of them, 
 	 */
 	public abstract Optional<N> getObject ( M graphModel, R s, P p, boolean errorIfMultiple );
 
@@ -64,7 +66,10 @@ public abstract class GraphUtils<M, N, R extends N, P extends N, L extends N>
 	{
 		return this.assertLiteral ( graphModel, suri, puri, value2Literal ( graphModel, lexValue ).orElse ( null ) );
 	}
-	
+
+	/**
+	 * @see #assertLiteral(Object, Object, Object, Object)
+	 */
 	public GraphUtils<M,N,R,P,L> assertLiteral ( M graphModel, String suri, String puri, L literal )
 	{
 		return assertLiteral ( 
@@ -75,8 +80,15 @@ public abstract class GraphUtils<M, N, R extends N, P extends N, L extends N>
 		);
 	}
 
+	/**
+	 * Add this triple to the graphModel (usually nothing happens if the triple is already there).
+	 * @see value2Literl() methods to get literals from plain values. 
+	 */
 	public abstract GraphUtils<M,N,R,P,L> assertLiteral ( M graphModel, R subj, P prop, L literal );
 	
+	/**
+	 * @see #assertResource(Object, Object, Object, Object)
+	 */
 	public GraphUtils<M,N,R,P,L> assertResource ( M graphModel, String suri, String puri, String ouri )
 	{
 		this.checkNonNullTriple ( "assertResource", suri, puri, ouri );		
@@ -88,11 +100,23 @@ public abstract class GraphUtils<M, N, R extends N, P extends N, L extends N>
 		);
 	}
 	
+	/**
+	 * Similarly to {@link #assertLiteral(Object, Object, Object, Object)}, asserts a triple linking 
+	 * two URIs.
+	 */
 	public abstract GraphUtils<M,N,R,P,L> assertResource ( M graphModel, R subj, P prop, R obj );
 
-
+	/**
+	 * Gets a resource node R from uri and using the graphModel. This is a way to abstract from the particular
+	 * RDF framework that is implementing GraphUtils, a specific framework is supposed to have methods to 
+	 * 
+	 * get something here.
+	 */
 	public abstract R uri2Resource ( M graphModel, String ruri );
-	
+
+	/**
+	 * @Similarly to {@link #uri2Resource(Object, String)}, gets a property node P from uri 
+	 */
 	public abstract P uri2Property ( M graphModel, String puri );
 	
 	
@@ -134,33 +158,81 @@ public abstract class GraphUtils<M, N, R extends N, P extends N, L extends N>
 		return literal2Value ( literal, Boolean::parseBoolean );
 	}
 	
+	/**
+	 * Converts the string to a generic literal having a language lang (if not null).
+	 * Should return an empty if lexValue is null.
+	 */
 	public abstract Optional<L> value2Literal ( M graphModel, String lexValue, String lang );
+	
+	/**
+	 * Converts a string into a literal of type typeUri (which is usually an XSD data type).
+	 * Should return an empty if lexValue is null. 
+	 */
 	public abstract Optional<L> value2TypedLiteral ( M graphModel, String lexValue, String typeUri );
 
+	/**
+	 * {@link #value2Literal(Object, String, String)} with lang == null (ie, no language in the final literal). 
+	 */
 	public Optional<L> value2Literal ( M graphModel, String lexValue ) {
 		return this.value2Literal ( graphModel, lexValue, (String) null );
 	}
 	
-	public <T> Optional<L> value2Literal ( M graphModel, T value, Function<T, String> toLexValueCvt, String lang ) {
+	/**
+	 * Converts a value to a literal having the given language. Uses tolexValueCvt to get the string lexical
+	 * value from the value.
+	 * 
+	 * Returns an empty if the value is null, so the conversion function can assume to 
+	 * receive a non-null.
+	 *  
+	 */
+	public <T> Optional<L> value2Literal ( M graphModel, T value, Function<T, String> toLexValueCvt, String lang )
+	{
+		if ( value == null ) return Optional.empty ();
 		return value2Literal ( graphModel, toLexValueCvt.apply ( value ), lang );
 	}
 
+	/**
+	 * Wraps {@link #value2Literal(Object, Object, Function, String)} with lang = null (ie, no-language literal).
+	 */
 	public <T> Optional<L> value2Literal ( M graphModel, T value, Function<T, String> toLexValueCvt ) {
 		return value2Literal ( graphModel, value, toLexValueCvt, null );
 	}
 	
-	public <T> Optional<L> value2TypedLiteral ( M graphModel, T value, Function<T, String> toLexValueCvt, String typeUri ) {
+	/**
+	 * Converts a value to a typed literal of type typeUri, getting the value's lexicalValue from the toLexValueCvt function.
+	 * 
+	 * Returns an empty if the value is null, so the conversion function can assume to 
+	 * receive a non-null.
+	 * 
+	 */
+	public <T> Optional<L> value2TypedLiteral ( M graphModel, T value, Function<T, String> toLexValueCvt, String typeUri )
+	{
+		if ( value == null ) return Optional.empty ();		
 		return value2TypedLiteral ( graphModel, toLexValueCvt.apply ( value ), typeUri );
 	}
 
-	public <T> Optional<L> value2TypedLiteral ( M graphModel, T value, Function<T, String> toLexValueCvt ) {
-		return this.value2TypedLiteral ( graphModel, toLexValueCvt.apply ( value ), XsdMapper.dataTypeIri ( value ) );
+	/**
+	 * Inovkes {@link #value2TypedLiteral(Object, Object, Function, String)} using {@link XsdMapper} to 
+	 * get the literal type from most common Java types.
+	 *  
+	 */
+	public <T> Optional<L> value2TypedLiteral ( M graphModel, T value, Function<T, String> toLexValueCvt ) 
+	{
+		if ( value == null ) return Optional.empty ();		
+		return this.value2TypedLiteral ( graphModel, value, toLexValueCvt, XsdMapper.dataTypeIri ( value ) );
 	}
 
+	/**
+	 * Wraps {@link #value2TypedLiteral(Object, Object)} using {@link Object#toString()} to get the lexicalValue
+	 * of value. 
+	 */
 	public <T> Optional<L> value2TypedLiteral ( M graphModel, T value ) {
 		return this.value2TypedLiteral ( graphModel, value, Object::toString );
 	}
 	
+	/**
+	 * This should use the implementing framework to return the dataType URI of a literal, if any. 
+	 */
 	public abstract Optional<String> literalDataType ( L literal );
 
 	
@@ -174,6 +246,11 @@ public abstract class GraphUtils<M, N, R extends N, P extends N, L extends N>
 		);
 	}
 	
+	/**
+	 * Wrapper of {@link #checkNonNullTriple(String, String, String, String, String)} that uses 
+	 * {@link #literal2Value(Object)} and {@link #literal2Date(Object)}. 
+	 *   
+	 */
 	public void checkNonNullTriple ( String methodName, String suri, String puri, L literal ) {
 		this.checkNonNullTriple ( methodName, suri, puri, literal2Value ( literal ).orElse ( null ), literalDataType ( literal ).orElse ( null ) );
 	}
@@ -181,7 +258,9 @@ public abstract class GraphUtils<M, N, R extends N, P extends N, L extends N>
 	
 	/**
 	 * Used above to check that we have non-null parameters.
+	 * 
 	 * @parm methodName is only used for logging.
+	 * 
 	 * @param dataTypeUri is not checked, only used to report error messages and it's the datatype expected for 
 	 * the value.
 	 */	
@@ -206,6 +285,9 @@ public abstract class GraphUtils<M, N, R extends N, P extends N, L extends N>
 		);
 	}
 	
+	/**
+	 * wrapper with null dataType URI
+	 */
 	public void checkNonNullTriple ( String methodName, String subjectUri, String propertyUri, String objectValueOrUri ) {
 		this.checkNonNullTriple ( methodName, subjectUri, propertyUri, objectValueOrUri, null );
 	}

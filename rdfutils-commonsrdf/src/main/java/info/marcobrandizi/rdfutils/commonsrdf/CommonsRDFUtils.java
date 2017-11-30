@@ -20,7 +20,8 @@ import info.marcobrandizi.rdfutils.exceptions.RdfException;
 import uk.ac.ebi.utils.exceptions.TooManyValuesException;
 
 /**
- * TODO: comment me!
+ * An implementatin of {@link GraphUtils} based on <a href = "https://commons.apache.org/proper/commons-rdf/">Apache Commons-RDF</a>.
+ * that allows for independence of a specific RDF framework implementation. 
  *
  * @author brandizi
  * <dl><dt>Date:</dt><dd>17 Jan 2017</dd></dl>

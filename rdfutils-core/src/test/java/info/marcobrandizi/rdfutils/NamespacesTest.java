@@ -7,7 +7,6 @@ import org.junit.Test;
 import info.marcobrandizi.rdfutils.namespaces.NamespaceUtils;
 
 /**
- * TODO: comment me!
  *
  * @author brandizi
  * <dl><dt>Date:</dt><dd>16 Jan 2017</dd></dl>

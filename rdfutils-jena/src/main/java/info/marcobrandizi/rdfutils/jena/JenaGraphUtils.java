@@ -169,26 +169,45 @@ public class JenaGraphUtils extends GraphUtils<Model, RDFNode, Resource, Propert
 	}
 	
 	
-	
-	private <T> T doRead ( Model m, Supplier<T> op )
+	/**
+	 * Invokes {@link #doSync(Model, Supplier, boolean)} with {@link Lock#READ} 
+	 */	
+	public <T> T doRead ( Model m, Supplier<T> op )
 	{
 		return this.doSync ( m, op, Lock.READ );
 	}
 
-	private void doReadVoid ( Model m, Runnable op ) {
+	/**
+	 * Invokes {@link #doSyncVoid(Model, Supplier, boolean)} with {@link Lock#READ} 
+	 */	
+	public void doReadVoid ( Model m, Runnable op ) {
 		this.doSyncVoid ( m, op, Lock.READ );
 	}
 
-	private <T> T doWrite ( Model m, Supplier<T> op )
+	/**
+	 * Invokes {@link #doSync(Model, Supplier, boolean)} with {@link Lock#WRITE} 
+	 */
+	public <T> T doWrite ( Model m, Supplier<T> op )
 	{
 		return this.doSync ( m, op, Lock.WRITE );
 	}
 
-	private void doWriteVoid ( Model m, Runnable op ) {
+	/**
+	 * Invokes {@link #doSyncVoid(Model, Supplier, boolean)} with {@link Lock#WRITE} 
+	 */
+	public void doWriteVoid ( Model m, Runnable op ) {
 		this.doSyncVoid ( m, op, Lock.WRITE );
 	}
 
-	private <T> T doSync ( Model m, Supplier<T> op, boolean isReadOnly )
+	/**
+	 * Wraps a Model-related operations within a synchronised sequence, that is,
+	 * runs {@link Model#enterCriticalSection(boolean)} and {@link Model#leaveCriticalSection()} before and
+	 * after the operation. 
+	 * 
+	 * @param isReadOnly has the semantics of {@link Lock#READ} or {@link Lock#WRITE}.
+	 * 
+	 */
+	public <T> T doSync ( Model m, Supplier<T> op, boolean isReadOnly )
 	{
 		m.enterCriticalSection ( isReadOnly );
 		try {
@@ -199,7 +218,12 @@ public class JenaGraphUtils extends GraphUtils<Model, RDFNode, Resource, Propert
 		}
 	}
 
-	private void doSyncVoid ( Model m, Runnable op, boolean isReadOnly ) {
+	/**
+	 * Like {@link #doSync(Model, Supplier, boolean)} but without returning any result (which allow you tu 
+	 * pass a {@link Runnable}, without any need for a return statement). 
+	 *  
+	 */
+	public void doSyncVoid ( Model m, Runnable op, boolean isReadOnly ) {
 		this.doSync ( m, () -> { op.run (); return null; }, isReadOnly );
 	}
 

@@ -8,7 +8,7 @@ import java.util.Map;
 import info.marcobrandizi.rdfutils.namespaces.NamespaceUtils;
 
 /**
- * TODO: comment me!
+ * Utility to map Java types to XSD types.
  *
  * @author brandizi
  * <dl><dt>Date:</dt><dd>22 Nov 2017</dd></dl>
