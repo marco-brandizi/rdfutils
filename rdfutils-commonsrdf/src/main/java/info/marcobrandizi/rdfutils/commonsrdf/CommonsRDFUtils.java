@@ -85,12 +85,14 @@ public class CommonsRDFUtils extends GraphUtils<Graph, RDFTerm, BlankNodeOrIRI, 
 	 * the RDF implementation you want to work with (see the tests in this module).
 	 *     
 	 */
-	public RDF getRDF () {
-		return rdf == null ? rdf = getDefaultRdf () : rdf;
+	public RDF getRDF () 
+	{
+		if ( rdf == null ) this.setRDF ( getDefaultRdf () );
+		return rdf;
 	}
 	
 	public synchronized void setRDF ( RDF rdf ) {
-		this.rdf = rdf;
+		if ( this.rdf != rdf ) this.rdf = rdf;
 	}
 	
 	

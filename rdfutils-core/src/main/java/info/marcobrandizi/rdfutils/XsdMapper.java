@@ -5,8 +5,6 @@ import static info.marcobrandizi.rdfutils.namespaces.NamespaceUtils.iri;
 import java.util.HashMap;
 import java.util.Map;
 
-import info.marcobrandizi.rdfutils.namespaces.NamespaceUtils;
-
 /**
  * Utility to map Java types to XSD types.
  *
