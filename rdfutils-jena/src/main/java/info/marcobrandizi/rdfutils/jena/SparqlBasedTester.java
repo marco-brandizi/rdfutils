@@ -70,15 +70,11 @@ public class SparqlBasedTester
 	 * @param errorMessage the error message to report in case of failure
 	 * @param sparql the SPARQL/ASK query to run against the triple store passed to the class constructor.
 	 */
-	public void testRDFOutput ( String errorMessage, String sparql )
+	public void ask ( String errorMessage, String sparql )
 	{
 		sparql = sparqlPrefixes + sparql;
-		try
-		{
-			// ARQ syntax has extensions for nice stuff like property paths
-			Query q = QueryFactory.create ( sparql, Syntax.syntaxARQ );
-			QueryExecution qe = QueryExecutionFactory.create ( q, model );
-			Assert.assertTrue ( errorMessage, qe.execAsk () );
+		try {
+			Assert.assertTrue ( errorMessage, SparqlUtils.ask ( sparql, model ) );
 		}
 		catch ( JenaException ex ) 
 		{
