@@ -4,14 +4,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.util.Optional;
 
 import org.apache.jena.graph.Triple;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
-import org.apache.jena.riot.RDFParser;
-import org.apache.jena.riot.RDFParserBuilder;
 import org.apache.jena.riot.system.StreamRDF;
 import org.apache.jena.sparql.core.Quad;
 
@@ -106,7 +105,7 @@ public class RDFImporter extends RDFProcessor<InputStream>
 			this.process ( new FileInputStream ( rdfFile ), base, hintLang );
 		}
 		catch ( FileNotFoundException ex ) {
-			throw new RuntimeException ( String.format ( 
+			throw new UncheckedIOException ( String.format ( 
 				"Error while reading file '%s': %s", 
 				Optional.ofNullable ( rdfFile ).map ( File::getAbsolutePath ).orElse ( "<null>" ),
 				ex.getMessage () ), 

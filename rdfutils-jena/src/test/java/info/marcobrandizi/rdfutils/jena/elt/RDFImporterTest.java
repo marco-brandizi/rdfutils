@@ -1,9 +1,7 @@
 package info.marcobrandizi.rdfutils.jena.elt;
 
 import static info.marcobrandizi.rdfutils.jena.elt.JenaIoUtils.getLangOrFormat;
-import static info.marcobrandizi.rdfutils.namespaces.NamespaceUtils.ns;
 import static info.marcobrandizi.rdfutils.namespaces.NamespaceUtils.registerNs;
-import static java.lang.String.format;
 import static org.junit.Assert.assertTrue;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -17,7 +15,6 @@ import org.junit.Test;
 
 import info.marcobrandizi.rdfutils.jena.SparqlBasedTester;
 import info.marcobrandizi.rdfutils.namespaces.NamespaceUtils;
-import junit.framework.Assert;
 
 /**
  * TODO: comment me!
