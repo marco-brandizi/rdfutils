@@ -96,6 +96,8 @@ public class RDFImporter extends RDFProcessor<InputStream>
 	{
 		StreamReader streamReader = new StreamReader ();
 		RDFDataMgr.parse ( streamReader, rdfInput, base, hintLang );
+		this.waitExecutor ( "Waiting for all RDF import jobs to finish" );
+		log.info ( "RDF import terminated" );
 	}
 	
 	public void process ( File rdfFile, String base, Lang hintLang )
