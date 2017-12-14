@@ -76,11 +76,39 @@ public class RDFImporter extends RDFProcessor<InputStream>
 			handleNewTask ( this.model, true );
 		}
 	}
+	
 		
 	@Override
-	public void process ( InputStream rdfInput )
+	public void process ( InputStream rdfInput, Object... opts )
 	{
-		process ( rdfInput, null, null );
+		String base = null;
+		Lang lang = null;
+
+		if ( opts != null )
+		{
+			if ( opts.length > 0 )
+			{
+				if ( ! ( opts [ 0 ] instanceof String ) ) 
+					throw new IllegalArgumentException ( String.format (
+						"base param wrong type %s RDFImporter accepts String base and Lang lang as parameters, " +
+						"check the documentation",
+						opts [ 0 ].getClass ().getName ()
+					));
+				base = (String) opts [ 0 ];
+			}
+			if ( opts.length > 1 )
+			{
+				if ( !( opts [ 1 ] instanceof Lang ) ) 
+					throw new IllegalArgumentException ( String.format (
+						"base param wrong type %s RDFImporter accepts String base and Lang lang as parameters, " +
+						"check the documentation",
+						opts [ 0 ].getClass ().getName ()
+					));
+				lang = (Lang) opts [ 1 ];
+			}
+		}
+		
+		process ( rdfInput, base, lang );
 	}
 	
 	/**
