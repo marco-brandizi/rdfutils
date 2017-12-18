@@ -15,6 +15,9 @@ import uk.ac.ebi.utils.threading.SizeBasedBatchProcessor;
  */
 public abstract class RDFProcessor<S> extends SizeBasedBatchProcessor<S, Model>
 {
+	protected boolean duplicateTBox = false;
+	private Model tbox = null;
+		
 	/**
 	 * @return {@link Model#size()} Note that {@link #getDestinationMaxSize()} is set to a default of 10000. 
 	 */
@@ -40,4 +43,37 @@ public abstract class RDFProcessor<S> extends SizeBasedBatchProcessor<S, Model>
 		
 		this.setDestinationMaxSize ( 10000 );
 	}
+
+
+	@Override
+	protected Model handleNewTask ( Model currentDest, boolean forceFlush )
+	{
+		if ( !this.duplicateTBox && this.tbox == null ) return super.handleNewTask ( currentDest, forceFlush );
+		
+		synchronized ( currentDest )
+		{
+			Model result = super.handleNewTask ( currentDest, forceFlush );
+			if ( result == currentDest ) return currentDest;
+			
+			if ( this.duplicateTBox ) {
+				if ( tbox == null ) tbox = this.getDestinationSupplier ().get ();
+				tbox.add ( currentDest );
+			}
+			else if ( this.tbox != null )
+				result.add ( this.tbox );
+			
+			return result;
+		}
+	}
+
+	protected boolean isDuplicateTBox ()
+	{
+		return duplicateTBox;
+	}
+
+	protected void setDuplicateTBox ( boolean duplicateTBox )
+	{
+		this.duplicateTBox = duplicateTBox;
+	}
+	
 }

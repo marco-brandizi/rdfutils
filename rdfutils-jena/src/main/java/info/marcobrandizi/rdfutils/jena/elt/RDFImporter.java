@@ -1,8 +1,10 @@
 package info.marcobrandizi.rdfutils.jena.elt;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.util.Optional;
@@ -86,7 +88,7 @@ public class RDFImporter extends RDFProcessor<InputStream>
 
 		if ( opts != null )
 		{
-			if ( opts.length > 0 )
+			if ( opts.length > 0 && opts [ 0 ] != null )
 			{
 				if ( ! ( opts [ 0 ] instanceof String ) ) 
 					throw new IllegalArgumentException ( String.format (
@@ -96,7 +98,7 @@ public class RDFImporter extends RDFProcessor<InputStream>
 					));
 				base = (String) opts [ 0 ];
 			}
-			if ( opts.length > 1 )
+			if ( opts.length > 1 && opts [ 1 ] != null )
 			{
 				if ( !( opts [ 1 ] instanceof Lang ) ) 
 					throw new IllegalArgumentException ( String.format (
@@ -129,10 +131,11 @@ public class RDFImporter extends RDFProcessor<InputStream>
 	
 	public void process ( File rdfFile, String base, Lang hintLang )
 	{
-		try {
+		try ( InputStream in = new BufferedInputStream ( new FileInputStream ( rdfFile ) ); ) 
+		{
 			this.process ( new FileInputStream ( rdfFile ), base, hintLang );
 		}
-		catch ( FileNotFoundException ex ) {
+		catch ( IOException ex ) {
 			throw new UncheckedIOException ( String.format ( 
 				"Error while reading file '%s': %s", 
 				Optional.ofNullable ( rdfFile ).map ( File::getAbsolutePath ).orElse ( "<null>" ),
