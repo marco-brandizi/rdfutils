@@ -70,9 +70,11 @@ public class TDBLoadingHandler implements Consumer<Model>
 		}
 
 		/*
-		log.debug ( "Writing {} triple(s) to TDB", model.size () );
-		Txn.executeWrite ( this.dataSet, () -> this.dataSet.getDefaultModel ().add ( model ) );
-		log.debug ( "{} triple(s) written to TDB", model.size () ); */
+		Txn.executeWrite ( this.dataSet, () -> {
+			log.debug ( "Writing {} triple(s) to TDB", model.size () );
+			dataSet.getDefaultModel ().add ( model );
+			log.debug ( "{} triple(s) written to TDB", model.size () );
+		}); */
 	}
 
 	public Dataset getDataSet ()
