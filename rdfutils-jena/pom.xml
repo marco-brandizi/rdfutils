@@ -27,6 +27,13 @@
 		  <artifactId>apache-jena-libs</artifactId>
 		  <type>pom</type>
 		</dependency>
+
+		<!-- Used in TDBLoadingHandler, to send a streamed Model to the underlining TDB -->		
+		<dependency>
+			<groupId>net.sf.jsignature.io-tools</groupId>
+			<artifactId>easystream</artifactId>
+			<version>1.2.15</version>
+		</dependency>
 		
   </dependencies>
 	  
