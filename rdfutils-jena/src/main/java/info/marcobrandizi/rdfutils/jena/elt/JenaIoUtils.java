@@ -5,7 +5,7 @@ import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFFormat;
 
 /**
- * TODO: comment me!
+ * I/O and data read/write utilities for Jena.
  *
  * @author brandizi
  * <dl><dt>Date:</dt><dd>1 Dec 2017</dd></dl>
@@ -13,6 +13,16 @@ import org.apache.jena.riot.RDFFormat;
  */
 public class JenaIoUtils
 {
+	/**
+	 * Analyses a string and tells if it corresponds to an {@link RDFFormat} or a {@link Lang}. This
+	 * can be useful with Jena interfaces requiring these objects.
+	 * 
+	 * The method looks up in the {@link RDFFormat} constant fields first and then, if it cannot find anything, 
+	 * further seachers in {@link Lang} constant fields.
+	 * 
+	 * Raises an exception if nothing can be found.
+	 * 
+	 */
 	public static Pair<RDFFormat, Lang> getLangOrFormat ( String langOrFormat )
 	{
 		try

@@ -6,10 +6,8 @@ import java.io.UncheckedIOException;
 import java.util.function.Consumer;
 
 import org.apache.jena.query.Dataset;
-import org.apache.jena.query.ReadWrite;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.riot.Lang;
-import org.apache.jena.system.Txn;
 import org.apache.jena.tdb.TDBLoader;
 import org.apache.jena.tdb.store.DatasetGraphTDB;
 import org.apache.jena.tdb.sys.TDBInternal;
@@ -20,7 +18,9 @@ import com.gc.iotools.stream.base.ExecutionModel;
 import com.gc.iotools.stream.os.OutputStreamToInputStream;
 
 /**
- * TODO: comment me!
+ * Can be used with {@link RDFImporter} to load data into a TDB triple store.
+ * 
+ * Note that this is experimental. TDB seems to work well only with the command line loader.
  *
  * @author brandizi
  * <dl><dt>Date:</dt><dd>19 Dec 2017</dd></dl>
