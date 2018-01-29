@@ -154,9 +154,14 @@
 		<repository>
 	    <id>EBIBioSamples-GH-repo</id>
 	    <url>https://raw.githubusercontent.com/EBIBioSamples/EBIBioSamples.github.io/maven-repo</url>
-	    <snapshots>
-        <enabled>true</enabled>
-	    </snapshots>
+	    <snapshots><enabled>true</enabled></snapshots>
+    </repository>
+		
+    <repository>
+    		<id>marcobrandizi.info</id>
+			<url>http://www.marcobrandizi.info:8081/artifactory/maven</url>
+	    <snapshots><enabled>true</enabled></snapshots>
+	    <releases><enabled>true</enabled></releases>
     </repository>
 		
   </repositories>
@@ -165,12 +170,12 @@
 	<distributionManagement>
 
     <snapshotRepository>
-    	<id>marcobrandizi.info</id>
+    		<id>marcobrandizi.info</id>
 			<url>http://www.marcobrandizi.info:8081/artifactory/maven</url>
     </snapshotRepository>
 
     <repository>
-    	<id>marcobrandizi.info</id>
+    		<id>marcobrandizi.info</id>
 			<url>http://www.marcobrandizi.info:8081/artifactory/maven</url>
     </repository>
 		

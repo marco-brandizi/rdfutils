@@ -104,11 +104,12 @@ public class RDFImporterTest
 	public void testTDBLoadingHandler () throws Exception
 	{
 		Dataset dataSet = TDBFactory.createDataset ( "target/imported_tdb" );
-
-		try 
+		
+		try (
+			RDFImporter importer = new RDFImporter ();
+		)
 		{
 			TDBLoadingHandler handler = new TDBLoadingHandler ( dataSet ); 
-			RDFImporter importer = new RDFImporter ();
 			importer.setConsumer ( handler );
 			int chunkSize = 10;
 			AtomicInteger chunksCount = new AtomicInteger ( 0 );

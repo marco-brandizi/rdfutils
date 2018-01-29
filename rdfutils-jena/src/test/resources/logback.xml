@@ -33,6 +33,7 @@
     <appender-ref ref="FileApp" />
   </root>
 
-  <!-- Add Loggers this way if you want finer reports for selected components -->
-  <!-- logger name = "uk.ac.ebi.utils.threading" level = "TRACE" / -->
+	<logger name = "org.apache.jena" additivity = "true"><level value = "info" /></logger>
+	<logger name = "TDB" additivity = "true"><level value = "info" /></logger>
+  
 </configuration>
