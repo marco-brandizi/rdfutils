@@ -21,7 +21,7 @@ import info.marcobrandizi.rdfutils.GraphUtils;
 import uk.ac.ebi.utils.exceptions.TooManyValuesException;
 
 /**
- * TODO: comment me!
+ * Set of utilities to ease the access Jena SPARQL interfaces.
  *
  * @author brandizi
  * <dl><dt>Date:</dt><dd>17 Jan 2017</dd></dl>
