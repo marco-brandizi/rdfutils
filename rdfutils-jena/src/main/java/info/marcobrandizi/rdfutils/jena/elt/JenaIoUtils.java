@@ -18,7 +18,7 @@ public class JenaIoUtils
 	 * can be useful with Jena interfaces requiring these objects.
 	 * 
 	 * The method looks up in the {@link RDFFormat} constant fields first and then, if it cannot find anything, 
-	 * further seachers in {@link Lang} constant fields.
+	 * further searches in {@link Lang} constant fields.
 	 * 
 	 * Raises an exception if nothing can be found.
 	 * 
