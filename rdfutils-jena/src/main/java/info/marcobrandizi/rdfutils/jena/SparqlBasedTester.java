@@ -124,7 +124,7 @@ public class SparqlBasedTester
 		.sorted ()
 		.peek ( f -> {
 			log.info ( "Running '{}'", f.getName () );
-			this.askFromFile ( "Error with SPARQL test: " + f.getName (), f.toString () );
+			this.askFromFile ( "Error with SPARQL test '" + f.getName () + "'", f.toString () );
 		})
 		.count ();
 		
