@@ -26,6 +26,7 @@ public class CommonNamespaces implements Namespaces
 		  put ( "dcterms", 				"http://purl.org/dc/terms/" );
 		  put ( "foaf", 					"http://xmlns.com/foaf/0.1/" );
 			put ( "xsd", 						"http://www.w3.org/2001/XMLSchema#" );
+			put ( "skos", 					"http://www.w3.org/2004/02/skos/core#" );
 		}});
 	}
 	
