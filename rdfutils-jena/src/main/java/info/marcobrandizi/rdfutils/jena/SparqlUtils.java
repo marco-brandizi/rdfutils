@@ -49,7 +49,7 @@ public class SparqlUtils
 	 * Gets a {@link Query} object corresponding to the string. Queries are cached to save some syntax parsing time.
 	 * All the calls below that accept SPARQL strings use this method. 
 	 */
-	public static Query getChachedQuery ( String sparql )
+	public static Query getCachedQuery ( String sparql )
 	{
 		return queryCache.getUnchecked ( sparql );
 	}
@@ -60,7 +60,7 @@ public class SparqlUtils
 	 */
 	public static QueryExecution query ( String sparql, Model model )
 	{
-		Query q = getChachedQuery ( sparql );
+		Query q = getCachedQuery ( sparql );
 		return QueryExecutionFactory.create ( q, model );
 	}
 	
