@@ -22,13 +22,13 @@ import info.marcobrandizi.rdfutils.jena.SparqlBasedTester;
 import info.marcobrandizi.rdfutils.namespaces.NamespaceUtils;
 
 /**
- * Basic tests for {@link RDFImporter}.
+ * Basic tests for {@link RDFStreamLoader}.
  *
  * @author brandizi
  * <dl><dt>Date:</dt><dd>4 Dec 2017</dd></dl>
  *
  */
-public class RDFImporterTest
+public class RDFStreamLoaderTest
 {
 	private Logger log = LoggerFactory.getLogger ( this.getClass () );
 	
@@ -48,9 +48,9 @@ public class RDFImporterTest
 	{
 		AtomicBoolean flag = new AtomicBoolean ( false ) ;
 
-		try ( RDFImporter importer = new RDFImporter (); )
+		try ( RDFStreamLoader loader = new RDFStreamLoader (); )
 		{
-			importer.setConsumer ( model -> 
+			loader.setConsumer ( model -> 
 			{
 				flag.set ( true );
 				
@@ -60,7 +60,7 @@ public class RDFImporterTest
 				tester.ask ( "No :alice knows!", "ASK {ex:alice foaf:knows ex:bob, ex:charlie, ex:snoopy}" );
 			});
 			
-			importer.process ( "target/test-classes/foaf_example.ttl", null, getLangOrFormat ( "TURTLE" ).getRight () );
+			loader.process ( "target/test-classes/foaf_example.ttl", null, getLangOrFormat ( "TURTLE" ).getRight () );
 			assertTrue ( "Processor not invoked!", flag.get () );
 		}
 	}
@@ -73,10 +73,10 @@ public class RDFImporterTest
 		AtomicInteger chunksCount = new AtomicInteger ( 0 );
 		Model umodel = ModelFactory.createDefaultModel ();
 		
-		try ( RDFImporter importer = new RDFImporter (); )
+		try ( RDFStreamLoader loader = new RDFStreamLoader (); )
 		{
-			importer.setDestinationMaxSize ( chunkSize );
-			importer.setConsumer ( model -> 
+			loader.setDestinationMaxSize ( chunkSize );
+			loader.setConsumer ( model -> 
 			{
 				umodel.enterCriticalSection ( Lock.WRITE );
 				umodel.add ( model );
@@ -84,7 +84,7 @@ public class RDFImporterTest
 				
 				chunksCount.getAndIncrement ();
 			});
-			importer.process ( "target/test-classes/dbpedia_berlin.rdf", null, getLangOrFormat (  "RDFXML"  ).getRight ());
+			loader.process ( "target/test-classes/dbpedia_berlin.rdf", null, getLangOrFormat (  "RDFXML"  ).getRight ());
 			assertTrue ( "Chunks count < 2", chunksCount.get () > 2 );
 			SparqlBasedTester tester = new SparqlBasedTester ( umodel, NamespaceUtils.asSPARQLProlog () );
 			
@@ -106,20 +106,20 @@ public class RDFImporterTest
 		Dataset dataSet = TDBFactory.createDataset ( "target/imported_tdb" );
 		
 		try (
-			RDFImporter importer = new RDFImporter ();
+			RDFStreamLoader loader = new RDFStreamLoader ();
 		)
 		{
 			TDBLoadingHandler handler = new TDBLoadingHandler ( dataSet ); 
-			importer.setConsumer ( handler );
+			loader.setConsumer ( handler );
 			int chunkSize = 10;
 			AtomicInteger chunksCount = new AtomicInteger ( 0 );
-			importer.setDestinationMaxSize ( chunkSize );
-			importer.setConsumer ( handler.andThen ( 
+			loader.setDestinationMaxSize ( chunkSize );
+			loader.setConsumer ( handler.andThen ( 
 				//m -> log.info ( "Chunk #{}", chunksCount.getAndIncrement () ) 
 				m -> chunksCount.getAndIncrement () 
 			));
 			
-			importer.process ( "target/test-classes/dbpedia_berlin.rdf", null, getLangOrFormat (  "RDFXML"  ).getRight ());
+			loader.process ( "target/test-classes/dbpedia_berlin.rdf", null, getLangOrFormat (  "RDFXML"  ).getRight ());
 
 			assertTrue ( "Chunks count < 2", chunksCount.get () > 2 );
 			

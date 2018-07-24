@@ -18,7 +18,7 @@ import com.gc.iotools.stream.base.ExecutionModel;
 import com.gc.iotools.stream.os.OutputStreamToInputStream;
 
 /**
- * Can be used with {@link RDFImporter} to load data into a TDB triple store.
+ * Can be used with {@link RDFStreamLoader} to load data into a TDB triple store.
  * 
  * Note that this is experimental. TDB seems to work well only with the command line loader.
  *

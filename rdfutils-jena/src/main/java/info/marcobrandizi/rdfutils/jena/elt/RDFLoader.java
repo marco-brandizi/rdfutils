@@ -7,13 +7,14 @@ import info.marcobrandizi.rdfutils.namespaces.NamespaceUtils;
 import uk.ac.ebi.utils.threading.SizeBasedBatchProcessor;
 
 /**
- * A {@link SizeBasedBatchProcessor} dedicated to the processing of {@link Model Jena RDF graph models}
+ * A {@link SizeBasedBatchProcessor} dedicated to the loading of RDF data into a {@link Model Jena RDF graph models}
+ * from a source S.
  *
  * @author brandizi
  * <dl><dt>Date:</dt><dd>1 Dec 2017</dd></dl>
  *
  */
-public abstract class RDFProcessor<S> extends SizeBasedBatchProcessor<S, Model>
+public abstract class RDFLoader<S> extends SizeBasedBatchProcessor<S, Model>
 {		
 	/**
 	 * @return {@link Model#size()} Note that {@link #getDestinationMaxSize()} is set to a default of 10000. 
@@ -24,11 +25,13 @@ public abstract class RDFProcessor<S> extends SizeBasedBatchProcessor<S, Model>
 	}
 
 	/** 
-	 * Initialises the {@link #getDestinationSupplier() destination supplier} with a new model generated via
-	 * {@link ModelFactory} and populated with {@link NamespaceUtils#getNamespaces()}.
+	 * Initialises the {@link #getDestinationSupplier() destination supplier} with code that spawns a new model generated 
+	 * via {@link ModelFactory} and populated with {@link NamespaceUtils#getNamespaces()}.
+	 * 
+	 * Sets {@link #getDestinationMaxSize()} to 10k triples
 	 *  
 	 */
-	public RDFProcessor ()
+	public RDFLoader ()
 	{
 		super ();
 		this.setDestinationSupplier ( () -> 
@@ -40,5 +43,4 @@ public abstract class RDFProcessor<S> extends SizeBasedBatchProcessor<S, Model>
 		
 		this.setDestinationMaxSize ( 10000 );
 	}
-	
 }

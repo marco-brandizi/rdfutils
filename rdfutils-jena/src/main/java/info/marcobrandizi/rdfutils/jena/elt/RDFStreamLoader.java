@@ -18,7 +18,7 @@ import org.apache.jena.sparql.core.Quad;
 import uk.ac.ebi.utils.threading.BatchProcessor;
 
 /**
- * A multi-thread RDF importer based on the structure of {@link RDFProcessor} and hence {@link BatchProcessor}.
+ * A multi-thread RDF importer based on the structure of {@link RDFLoader} and hence {@link BatchProcessor}.
  * 
  * This class is a skeleton that parses an input in the {@link #process(InputStream, String, Lang) process() methods}
  * below, sequentially splits it into multiple {@link Model} instances and passes them to parallel
@@ -31,12 +31,12 @@ import uk.ac.ebi.utils.threading.BatchProcessor;
  * <dl><dt>Date:</dt><dd>1 Dec 2017</dd></dl>
  *
  */
-public class RDFImporter extends RDFProcessor<InputStream>
+public class RDFStreamLoader extends RDFLoader<InputStream>
 {
 	/**
 	 * This bridges ourselves to the Jena {@link RDFDataMgr data manager} (ie, the RDF reader).
-	 * As data are sent to this interface, we populate the {@link RDFImporter#getDestinationSupplier() current destination model}
-	 * and possibly {@link RDFImporter#handleNewTask(Model, boolean) submit a new processing thread}.
+	 * As data are sent to this interface, we populate the {@link RDFStreamLoader#getDestinationSupplier() current destination model}
+	 * and possibly {@link RDFStreamLoader#handleNewTask(Model, boolean) submit a new processing thread}.
 	 */
 	private class StreamReader implements StreamRDF
 	{
@@ -89,9 +89,9 @@ public class RDFImporter extends RDFProcessor<InputStream>
 		{
 			if ( opts.length > 0 && opts [ 0 ] != null )
 			{
-				if ( ! ( opts [ 0 ] instanceof String ) ) 
+				if ( !( opts [ 0 ] instanceof String ) ) 
 					throw new IllegalArgumentException ( String.format (
-						"base param wrong type %s RDFImporter accepts String base and Lang lang as parameters, " +
+						"base param wrong type %s RDFStreamLoader accepts String base and Lang lang as parameters, " +
 						"check the documentation",
 						opts [ 0 ].getClass ().getName ()
 					));
@@ -101,7 +101,7 @@ public class RDFImporter extends RDFProcessor<InputStream>
 			{
 				if ( !( opts [ 1 ] instanceof Lang ) ) 
 					throw new IllegalArgumentException ( String.format (
-						"base param wrong type %s RDFImporter accepts String base and Lang lang as parameters, " +
+						"base param wrong type %s RDFStreamLoader accepts String base and Lang lang as parameters, " +
 						"check the documentation",
 						opts [ 0 ].getClass ().getName ()
 					));
@@ -136,7 +136,7 @@ public class RDFImporter extends RDFProcessor<InputStream>
 		}
 		catch ( IOException ex ) {
 			throw new UncheckedIOException ( String.format ( 
-				"Error while reading file '%s': %s", 
+				"Error while reading file '%s': %s",
 				Optional.ofNullable ( rdfFile ).map ( File::getAbsolutePath ).orElse ( "<null>" ),
 				ex.getMessage () ), 
 				ex 
