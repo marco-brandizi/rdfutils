@@ -8,6 +8,11 @@ import org.apache.jena.query.ResultSet;
 import org.apache.jena.query.Syntax;
 import org.apache.jena.rdf.model.Model;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
+
 /**
  * Some utilities to ease the access to SPARQL in Jena.
  *
@@ -18,11 +23,44 @@ import org.apache.jena.rdf.model.Model;
 public class SparqlUtils
 {
 	/**
+	 * A SPARQL query cache. This stores queries that have already been parsed from their string representation. 
+	 * It is used in the data manager methods, to save some time about query parsing.  
+	 * 
+	 * TODO: move the query caching to {@link SparqlUtils}.
+	 */
+	private static LoadingCache<String, Query> queryCache; 
+	
+	static 
+	{
+		Cache<String, Query> cache = CacheBuilder
+				.newBuilder ()
+				.maximumSize ( 1000 )
+				.build ( new CacheLoader<String, Query> () 
+				{
+					@Override
+					public Query load ( String sparql ) throws Exception {
+						return QueryFactory.create ( sparql, Syntax.syntaxARQ );
+					}
+				});
+			queryCache = (LoadingCache<String, Query>) cache;		
+	}
+	
+	/**
+	 * Gets a {@link Query} object corresponding to the string. Queries are cached to save some syntax parsing time.
+	 * All the calls below that accept SPARQL strings use this method. 
+	 */
+	public static Query getChachedQuery ( String sparql )
+	{
+		return queryCache.getUnchecked ( sparql );
+	}
+		
+	
+	/**
 	 * Creates a query out of the string, using a {@link Syntax#syntaxARQ default syntax}. 
 	 */
 	public static QueryExecution query ( String sparql, Model model )
 	{
-		Query q = QueryFactory.create ( sparql, Syntax.syntaxARQ );
+		Query q = getChachedQuery ( sparql );
 		return QueryExecutionFactory.create ( q, model );
 	}
 	
@@ -63,5 +101,4 @@ public class SparqlUtils
 	{
 		return construct ( sparqlConstruct, model, null );
 	}
-
 }
