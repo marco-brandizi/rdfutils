@@ -32,17 +32,19 @@ public class SparqlUtils
 	
 	static 
 	{
+		// Initialise the query cache with the QueryFactory-based generator.
+		//
 		Cache<String, Query> cache = CacheBuilder
-				.newBuilder ()
-				.maximumSize ( 1000 )
-				.build ( new CacheLoader<String, Query> () 
-				{
-					@Override
-					public Query load ( String sparql ) throws Exception {
-						return QueryFactory.create ( sparql, Syntax.syntaxARQ );
-					}
-				});
-			queryCache = (LoadingCache<String, Query>) cache;		
+		.newBuilder ()
+		.maximumSize ( 1000 )
+		.build ( new CacheLoader<String, Query> () 
+		{
+			@Override
+			public Query load ( String sparql ) throws Exception {
+				return QueryFactory.create ( sparql, Syntax.syntaxARQ );
+			}
+		});
+		queryCache = (LoadingCache<String, Query>) cache;		
 	}
 	
 	/**
