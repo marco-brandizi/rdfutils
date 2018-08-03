@@ -34,7 +34,11 @@
 			<artifactId>easystream</artifactId>
 			<version>1.2.15</version>
 		</dependency>
-		
+
+		<dependency>
+				<groupId>com.machinezoo.noexception</groupId>
+				<artifactId>noexception</artifactId>
+		</dependency>
   </dependencies>
 	  
 </project>
