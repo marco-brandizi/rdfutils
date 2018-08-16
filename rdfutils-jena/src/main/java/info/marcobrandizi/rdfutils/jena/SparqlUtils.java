@@ -1,12 +1,16 @@
 package info.marcobrandizi.rdfutils.jena;
 
+import org.apache.jena.atlas.logging.Log;
 import org.apache.jena.query.Query;
+import org.apache.jena.query.QueryException;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.query.Syntax;
 import org.apache.jena.rdf.model.Model;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -30,6 +34,8 @@ public class SparqlUtils
 	 */
 	private static LoadingCache<String, Query> queryCache; 
 	
+	private static Logger log = LoggerFactory.getLogger ( SparqlUtils.class );
+	
 	static 
 	{
 		// Initialise the query cache with the QueryFactory-based generator.
@@ -40,8 +46,15 @@ public class SparqlUtils
 		.build ( new CacheLoader<String, Query> () 
 		{
 			@Override
-			public Query load ( String sparql ) throws Exception {
-				return QueryFactory.create ( sparql, Syntax.syntaxARQ );
+			public Query load ( String sparql )
+			{
+				try {
+					return QueryFactory.create ( sparql, Syntax.syntaxARQ );
+				}
+				catch ( QueryException ex ) {
+					log.error ( "SPARQL Error in SparqlUtils, query is:\n{}", sparql );
+					throw new IllegalArgumentException ( "SPARQL error in SparqlUtils: " + ex.getMessage (), ex );
+				}
 			}
 		});
 		queryCache = (LoadingCache<String, Query>) cache;		
