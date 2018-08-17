@@ -26,16 +26,16 @@ EOT
 fi
 
 
-msg 'Cleaning-up'
-isqlw "SPARQL CLEAR GRAPH <$graph>;"
-isqlw "delete from db.dba.load_list where ll_file like '$src_dir%';"
-isqlw "ld_dir('$src_dir', '*', '$graph');"
+message 'Cleaning-up'
+isql_wrapper "SPARQL CLEAR GRAPH <$graph>;"
+isql_wrapper "delete from db.dba.load_list where ll_file like '$src_dir%';"
+isql_wrapper "ld_dir('$src_dir', '*', '$graph');"
 for i in seq $VIRTUOSO_JOBS
 do
-  isqlw "rdf_loader_run();" &
+  isql_wrapper "rdf_loader_run();" &
 done
 
-msg "$VIRTUOSO_JOBS loaders started, please wait"
+message "$VIRTUOSO_JOBS loaders started, please wait"
 wait $(jobs -p)
 
-msg 'The End'
+message 'The End'

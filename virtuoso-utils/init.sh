@@ -4,7 +4,7 @@
 
 : ${VIRTUOSO_USER:=dba}
 : ${VIRTUOSO_PASSWORD:=dba}
-: ${VIRTUOSO_BIN_DIR:=/usr/local/bin
+: ${VIRTUOSO_BIN_DIR:=/usr/local/bin}
 
 # Number of parallel jobs that can be sent to Virtuoso commands. Used with rdf_loader_run() and similar cases
 #

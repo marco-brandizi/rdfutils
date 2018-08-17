@@ -10,13 +10,13 @@ is_detail="$1"
 cd `dirname $0`
 . ./init.sh
 
-msg 'Checkpoint'
-isqlw "checkpoint;"
+message 'Checkpoint'
+isql_wrapper "checkpoint;"
 
-if [ "$report_flag" != '' ]; then
-  msg 'LOAD STATUS INFO'
-  isqlw "select ll_state,ll_file,ll_started,ll_error from db.dba.load_list;"
+if [ "$is_detail" != '' ]; then
+  message 'LOAD STATUS INFO'
+  isql_wrapper "select ll_state,ll_file,ll_started,ll_error from db.dba.load_list;"
 fi
 
 message '3Store Size (#quads)'
-isqlw "select count(*) from db.dba. rdf_quad;"
+isql_wrapper "select count(*) from db.dba. rdf_quad;"
