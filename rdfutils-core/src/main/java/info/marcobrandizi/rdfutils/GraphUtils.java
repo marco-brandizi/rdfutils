@@ -131,7 +131,8 @@ public abstract class GraphUtils<M, N, R extends N, P extends N, L extends N>
 	public abstract <T> Optional<T> literal2Value ( N literal, Function<String, T> converter );
 
 	/**
-	 * Returns the literal that is achieved from type N (e.g., the lexical form) as-is, without conversions
+	 * Returns the string that the framework extracts from the type N (e.g., the lexical form) as-is, 
+	 * without conversions
 	 */
 	public Optional<String> literal2Value ( N literal ) {
 		return literal2Value ( literal, Function.identity () );
@@ -157,6 +158,14 @@ public abstract class GraphUtils<M, N, R extends N, P extends N, L extends N>
 	public Optional<Boolean> literal2Boolean ( N literal ) {
 		return literal2Value ( literal, Boolean::parseBoolean );
 	}
+	
+	public Optional<Object> literal2ObjectXsdMapperBased ( L literal )
+	{
+		String xsdIri = this.literalDataType ( literal ).orElse ( null );
+		String lexicalForm = this.literal2Value ( literal ).orElse ( null );
+		return Optional.ofNullable ( XsdMapper.javaValueWithDefault ( xsdIri, lexicalForm ) );
+	}
+	
 	
 	/**
 	 * Converts the string to a generic literal having a language lang (if not null).
@@ -212,7 +221,7 @@ public abstract class GraphUtils<M, N, R extends N, P extends N, L extends N>
 	}
 
 	/**
-	 * Inovkes {@link #value2TypedLiteral(Object, Object, Function, String)} using {@link XsdMapper} to 
+	 * Invokes {@link #value2TypedLiteral(Object, Object, Function, String)} using {@link XsdMapper} to 
 	 * get the literal type from most common Java types.
 	 *  
 	 */
@@ -223,11 +232,11 @@ public abstract class GraphUtils<M, N, R extends N, P extends N, L extends N>
 	}
 
 	/**
-	 * Wraps {@link #value2TypedLiteral(Object, Object)} using {@link Object#toString()} to get the lexicalValue
-	 * of value. 
+	 * Wraps {@link #value2TypedLiteral(Object, Object)} using {@link XsdMapper#lexicalForm(Object)} 
+	 * to get the lexical value of value. 
 	 */
 	public <T> Optional<L> value2TypedLiteral ( M graphModel, T value ) {
-		return this.value2TypedLiteral ( graphModel, value, Object::toString );
+		return this.value2TypedLiteral ( graphModel, value, XsdMapper::lexicalForm  );
 	}
 	
 	/**
