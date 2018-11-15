@@ -15,11 +15,9 @@ export VIRTUOSO_BIN_DIR VIRTUOSO_USER VIRT_PASSWORD
 # This is used in scripts that invoke SPARQL endpoints
 export WGET_OPTS='--no-check-certificate --user='foo' --password='changeme''
 
-# Jena is used by certain scripts, such as sparql_unit_testing/
-#
 if [ "$JENA_HOME" == "" ]
 then
-  echo -e "\tWARNING: no JENA_HOME defined"
+  echo -e "\tWARNING: no JENA_HOME defined, Jena is needed by tools like sparql_unit_testing/"
 fi
 
 function isql_wrapper

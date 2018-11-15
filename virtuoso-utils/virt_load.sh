@@ -2,7 +2,6 @@
 #
 
 cd `dirname $0`
-
 . ./init.sh
 
 src_dir="$1"
