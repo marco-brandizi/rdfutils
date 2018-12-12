@@ -251,7 +251,7 @@ public abstract class GraphUtils<M, N, R extends N, P extends N, L extends N>
 			methodName, 
 			subj == null ? null : subj.toString (), 
 		  prop == null ? null : prop.toString (), 
-		  	obj == null ? null : prop.toString () 
+		  obj == null ? null : prop.toString () 
 		);
 	}
 	
