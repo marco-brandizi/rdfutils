@@ -21,7 +21,7 @@ public class NamespacesTest
 			"No rdf: namespace found!", "http://www.w3.org/1999/02/22-rdf-syntax-ns#", 
 			NamespaceUtils.ns ( "rdf" ) 
 		);
-		assertEquals ( "uri ( rdfs:label ) not working!", 
+		assertEquals ( "iri ( rdfs:label ) not working!", 
 			"http://www.w3.org/2000/01/rdf-schema#label", 
 			NamespaceUtils.iri ( "rdfs:label" ) 
 		);
@@ -33,6 +33,15 @@ public class NamespacesTest
 		String fooNs = "http://somewhere.in.net/foons#";
 		NamespaceUtils.registerNs ( "foo", fooNs );
 		assertEquals ( "registerNs not working!", fooNs, NamespaceUtils.ns ( "foo" ) );
+	}
+
+	@Test
+	public void testFallback ()
+	{
+		assertEquals ( "iriAny() not working!", 
+			"http://www.w3.org/2000/01/rdf-schema#label", 
+			NamespaceUtils.iriAny ( "http://www.w3.org/2000/01/rdf-schema#label" ) 
+		);
 	}
 	
 }

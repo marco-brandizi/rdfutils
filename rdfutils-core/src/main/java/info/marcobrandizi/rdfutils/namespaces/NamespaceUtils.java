@@ -28,7 +28,7 @@ public class NamespaceUtils
 	
 	static 
 	{
-		NAMESPACES = new HashMap<String, String> ();
+		NAMESPACES = new HashMap<> ();
 		
 		// So, let's go with the service loader as usually
 		for ( Namespaces nss: ServiceLoader.load ( Namespaces.class ) )
@@ -60,6 +60,23 @@ public class NamespaceUtils
 		return iri ( chunks [ 0 ], chunks [ 1 ] );
 	}
 	
+	/** 
+	 * If there isn't any namespace for the prefix in the parameter (or no prefix can be computed),
+	 * returns the paramter unchanged. This can be used in cases where it's not known whether the parameter
+	 * is a shortened IRI or an already expanded one.
+	 */
+	public static String iriAny ( String possiblyPrefixedUri ) 
+	{
+		String[] chunks = StringUtils.split ( possiblyPrefixedUri, ':' );
+		if ( chunks == null || chunks.length < 2 ) return possiblyPrefixedUri;
+		
+		String prefix = StringUtils.trimToNull ( chunks [ 0 ] );
+		String ns = ns ( prefix );
+		if ( ns == null ) return possiblyPrefixedUri;
+		return ns + chunks [ 1 ];
+	}
+
+	
 	/**
 	 * Returns a unmodifiable view of the namespaces managed by this utility class, use {@link #registerNs(String, String)}
 	 * to make changes.
@@ -72,6 +89,11 @@ public class NamespaceUtils
 	public static void registerNs ( String prefix, String uri ) {
 		NAMESPACES.put ( prefix, uri );
 	}
+	
+	public static void registerNs ( Map<String, String> namespaces ) {
+		NAMESPACES.putAll ( namespaces );
+	}
+	
 	
 	/**
 	 * Builds a list of {@code PREFIX x <y>\n} from the current list of managed prefixes, 

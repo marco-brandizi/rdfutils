@@ -80,49 +80,49 @@ public class XsdMapper
 			
 			@SuppressWarnings ( "rawtypes" )
 			LiteralType types[] = new LiteralType[] { 
-				new LiteralType<String> ( 
+				new LiteralType<> ( 
 					iri ( "xsd:string" ), String.class , Function.identity (), Function.identity () 
 				),
-				new LiteralType<BigInteger> ( iri ( "xsd:integer" ), 
+				new LiteralType<> ( iri ( "xsd:integer" ), 
 					BigInteger.class , BigInteger::toString , s -> BigInteger.valueOf ( Long.parseLong ( s ) )
 				),
-				new LiteralType<Integer> ( 
+				new LiteralType<> ( 
 					iri ( "xsd:int" ), Integer.class , n -> Integer.toString ( n ) , Integer::parseInt
 				),
-				new LiteralType<Long> (
+				new LiteralType<> (
 					iri ( "xsd:long" ), Long.class, n -> Long.toString ( n ) , Long::parseLong
 				),
-				new LiteralType<Short> ( 
+				new LiteralType<> ( 
 					iri ( "xsd:short" ), Short.class, n -> Short.toString ( n ) , Short::parseShort
 				),
-				new LiteralType<BigDecimal> ( 
+				new LiteralType<> ( 
 					iri ( "xsd:decimal" ), 
 					BigDecimal.class, BigDecimal::toString , s -> BigDecimal.valueOf ( Double.parseDouble ( s ) )
 				),
-				new LiteralType<Float> (
+				new LiteralType<> (
 					iri ( "xsd:float" ), Float.class, x -> Float.toString ( x ), Float::parseFloat
 				),
-				new LiteralType<Double> ( 
+				new LiteralType<> ( 
 					iri ( "xsd:double" ), Double.class, x -> Double.toString ( x ), Double::parseDouble
 				),
-				new LiteralType<Boolean> ( 
+				new LiteralType<> ( 
 					iri ( "xsd:boolean" ), Boolean.class, b -> Boolean.toString ( b ), Boolean::parseBoolean
 				),
-				new LiteralType<Byte> (
+				new LiteralType<> (
 					iri ( "xsd:byte" ), Byte.class, b -> Byte.toString ( b ), Byte::parseByte
 				),
-				new LiteralType<XMLGregorianCalendar> ( 
+				new LiteralType<> ( 
 					iri ( "xsd:dateTime" ), XMLGregorianCalendar.class,
 					XMLGregorianCalendar::toXMLFormat, datatypeFactory::newXMLGregorianCalendar
 				),
-				new LiteralType<Duration> (
+				new LiteralType<> (
 					iri ( "xsd:duration" ), Duration.class, Duration::toString, datatypeFactory::newDuration
 				),
-				new LiteralType<QName> (
+				new LiteralType<> (
 					iri ( "xsd:NOTATION" ), QName.class, QName::toString, QName::valueOf
 				),
 				// Leave this after xsd:NOTATION (see below)
-				new LiteralType<QName> (
+				new LiteralType<> (
 					iri ( "xsd:QName" ), QName.class, QName::toString, QName::valueOf
 				)				
 			};
