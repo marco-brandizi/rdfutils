@@ -187,7 +187,6 @@
 		
 	</distributionManagement>
 
-
   <modules>
     <module>rdfutils-core</module>
     <module>rdfutils-jena</module>
