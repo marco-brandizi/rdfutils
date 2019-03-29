@@ -102,8 +102,8 @@ public class TDBEndPointHelper extends SparqlEndPointHelper implements AutoClose
 	@Override
 	public QueryExecution getQueryExecutor ( Query query )
 	{
-		Model m = this.getDataSet ().getDefaultModel ();
-		return QueryExecutionFactory.create ( query, m );
+//		Model m = this.getDataSet ().getDefaultModel ();
+		return QueryExecutionFactory.create ( query, this.getDataSet() );
 	}
 	
 	/**
