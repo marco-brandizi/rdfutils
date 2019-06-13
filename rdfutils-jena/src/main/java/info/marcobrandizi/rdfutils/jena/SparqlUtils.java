@@ -1,6 +1,5 @@
 package info.marcobrandizi.rdfutils.jena;
 
-import org.apache.jena.atlas.logging.Log;
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryException;
 import org.apache.jena.query.QueryExecution;
@@ -12,7 +11,6 @@ import org.apache.jena.rdf.model.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -30,17 +28,15 @@ public class SparqlUtils
 	 * A SPARQL query cache. This stores queries that have already been parsed from their string representation. 
 	 * It is used in the data manager methods, to save some time about query parsing.  
 	 * 
-	 * TODO: move the query caching to {@link SparqlUtils}.
 	 */
-	private static LoadingCache<String, Query> queryCache; 
-	
-	private static Logger log = LoggerFactory.getLogger ( SparqlUtils.class );
+	private static LoadingCache<String, Query> queryCache;
+	protected static Logger log = LoggerFactory.getLogger ( SparqlUtils.class );
 	
 	static 
 	{
 		// Initialise the query cache with the QueryFactory-based generator.
 		//
-		Cache<String, Query> cache = CacheBuilder
+		queryCache = CacheBuilder
 		.newBuilder ()
 		.maximumSize ( 1000 )
 		.build ( new CacheLoader<String, Query> () 
@@ -57,7 +53,6 @@ public class SparqlUtils
 				}
 			}
 		});
-		queryCache = (LoadingCache<String, Query>) cache;		
 	}
 	
 	/**

@@ -15,7 +15,8 @@ import com.machinezoo.noexception.throwing.ThrowingRunnable;
 import com.machinezoo.noexception.throwing.ThrowingSupplier;
 
 /**
- * TODO: comment me!
+ * A SPARQL end point helper for Jena, aiming at making SPARQL access independent of the endpoint type 
+ * (eg, transparent wrt TDB or HTTP endpoint).
  *
  * @author brandizi
  * <dl><dt>Date:</dt><dd>25 Jul 2018</dd></dl>

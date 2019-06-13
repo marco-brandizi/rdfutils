@@ -12,7 +12,7 @@ import org.apache.jena.system.Txn;
 import org.apache.jena.tdb.TDBFactory;
 
 /**
- * TODO: comment me!
+ * A {@link SparqlEndPointHelper} for Jena TDB triple stores.. 
  *
  * @author brandizi
  * <dl><dt>Date:</dt><dd>24 Jul 2018</dd></dl>
