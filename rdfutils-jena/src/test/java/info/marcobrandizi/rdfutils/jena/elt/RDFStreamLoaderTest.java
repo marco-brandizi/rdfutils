@@ -49,7 +49,7 @@ public class RDFStreamLoaderTest
 		AtomicBoolean flag = new AtomicBoolean ( false ) ;
 
 		RDFStreamLoader loader = new RDFStreamLoader ();
-		loader.setConsumer ( model -> 
+		loader.setBatchJob ( model -> 
 		{
 			flag.set ( true );
 			
@@ -72,8 +72,8 @@ public class RDFStreamLoaderTest
 		Model umodel = ModelFactory.createDefaultModel ();
 		
 		RDFStreamLoader loader = new RDFStreamLoader ();
-		loader.setDestinationMaxSize ( chunkSize );
-		loader.setConsumer ( model -> 
+		loader.setBatchMaxSize ( chunkSize );
+		loader.setBatchJob ( model -> 
 		{
 			umodel.enterCriticalSection ( Lock.WRITE );
 			umodel.add ( model );
@@ -105,11 +105,11 @@ public class RDFStreamLoaderTest
 		{
 			RDFStreamLoader loader = new RDFStreamLoader ();			
 			TDBLoadingHandler handler = new TDBLoadingHandler ( dataSet ); 
-			loader.setConsumer ( handler );
+			loader.setBatchJob ( handler );
 			int chunkSize = 10;
 			AtomicInteger chunksCount = new AtomicInteger ( 0 );
-			loader.setDestinationMaxSize ( chunkSize );
-			loader.setConsumer ( handler.andThen ( 
+			loader.setBatchMaxSize ( chunkSize );
+			loader.setBatchJob ( handler.andThen ( 
 				//m -> log.info ( "Chunk #{}", chunksCount.getAndIncrement () ) 
 				m -> chunksCount.getAndIncrement () 
 			));

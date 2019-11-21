@@ -18,12 +18,12 @@ import org.apache.jena.sparql.core.Quad;
 import uk.ac.ebi.utils.threading.BatchProcessor;
 
 /**
- * A multi-thread RDF importer based on the structure of {@link RDFLoader} and hence {@link BatchProcessor}.
+ * A multi-thread RDF importer based on the structure of {@link RDFBatchProcessor} and hence {@link BatchProcessor}.
  * 
  * This class is a skeleton that parses an input in the {@link #process(InputStream, String, Lang) process() methods}
  * below, sequentially splits it into multiple {@link Model} instances and passes them to parallel
- * {@link #getConsumer() consumers}. Hence, you need to define something to do with the input RDF via such 
- * {@link #setConsumer(java.util.function.Consumer) consumer}.
+ * {@link #getBatchJob() consumers}. Hence, you need to define something to do with the input RDF via such 
+ * {@link #setBatchJob(java.util.function.Consumer) consumer}.
  * 
  * See unit tests for an example of use.
  *
@@ -31,12 +31,12 @@ import uk.ac.ebi.utils.threading.BatchProcessor;
  * <dl><dt>Date:</dt><dd>1 Dec 2017</dd></dl>
  *
  */
-public class RDFStreamLoader extends RDFLoader<InputStream>
+public class RDFStreamLoader extends RDFBatchProcessor<InputStream>
 {
 	/**
 	 * This bridges ourselves to the Jena {@link RDFDataMgr data manager} (ie, the RDF reader).
-	 * As data are sent to this interface, we populate the {@link RDFStreamLoader#getDestinationSupplier() current destination model}
-	 * and possibly {@link RDFStreamLoader#handleNewTask(Model, boolean) submit a new processing thread}.
+	 * As data are sent to this interface, we populate the {@link RDFStreamLoader#getBatchFactory() current destination model}
+	 * and possibly {@link RDFStreamLoader#handleNewBatch(Model, boolean) submit a new processing thread}.
 	 */
 	private class StreamReader implements StreamRDF
 	{
@@ -47,14 +47,14 @@ public class RDFStreamLoader extends RDFLoader<InputStream>
 
 		@Override
 		public void start () {
-			this.model = getDestinationSupplier ().get ();
+			this.model = getBatchFactory ().get ();
 		}
 
 		@Override
 		public void triple ( Triple triple ) 
 		{
 			this.model.getGraph ().add ( triple );
-			this.model = handleNewTask ( this.model );
+			this.model = handleNewBatch ( this.model );
 		}
 
 		@Override
@@ -74,7 +74,7 @@ public class RDFStreamLoader extends RDFLoader<InputStream>
 
 		@Override
 		public void finish () {
-			handleNewTask ( this.model, true );
+			handleNewBatch ( this.model, true );
 		}
 	}
 	
@@ -113,7 +113,7 @@ public class RDFStreamLoader extends RDFLoader<InputStream>
 	}
 	
 	/**
-	 * Uses the {@link RDFDataMgr} to parse the input and send chunks of it to {@link #getConsumer() processors}.
+	 * Uses the {@link RDFDataMgr} to parse the input and send chunks of it to {@link #getBatchJob() processors}.
 	 * base and hintLang are the usual Jena parameters accepted by the 
 	 * {@link RDFDataMgr#parse(StreamRDF, InputStream, String, Lang) RDF parsers}. 
 	 * 
