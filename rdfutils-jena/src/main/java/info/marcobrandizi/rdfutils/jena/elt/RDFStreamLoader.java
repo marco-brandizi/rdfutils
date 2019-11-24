@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import org.apache.jena.graph.Triple;
 import org.apache.jena.rdf.model.Model;
@@ -15,10 +16,10 @@ import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.system.StreamRDF;
 import org.apache.jena.sparql.core.Quad;
 
-import uk.ac.ebi.utils.threading.BatchProcessor;
+import uk.ac.ebi.utils.threading.batchproc.BatchProcessor;
 
 /**
- * A multi-thread RDF importer based on the structure of {@link RDFBatchProcessor} and hence {@link BatchProcessor}.
+ * A multi-thread RDF importer based on {@link BatchProcessor} and {@link ModelBatchCollector}.
  * 
  * This class is a skeleton that parses an input in the {@link #process(InputStream, String, Lang) process() methods}
  * below, sequentially splits it into multiple {@link Model} instances and passes them to parallel
@@ -31,7 +32,7 @@ import uk.ac.ebi.utils.threading.BatchProcessor;
  * <dl><dt>Date:</dt><dd>1 Dec 2017</dd></dl>
  *
  */
-public class RDFStreamLoader extends RDFBatchProcessor<InputStream>
+public class RDFStreamLoader<BJ extends Consumer<Model>> extends BatchProcessor<Model, ModelBatchCollector, BJ>
 {
 	/**
 	 * This bridges ourselves to the Jena {@link RDFDataMgr data manager} (ie, the RDF reader).
@@ -47,7 +48,7 @@ public class RDFStreamLoader extends RDFBatchProcessor<InputStream>
 
 		@Override
 		public void start () {
-			this.model = getBatchFactory ().get ();
+			this.model = getBatchCollector ().batchFactory ().get ();
 		}
 
 		@Override
@@ -78,8 +79,21 @@ public class RDFStreamLoader extends RDFBatchProcessor<InputStream>
 		}
 	}
 	
+	
 		
-	@Override
+	public RDFStreamLoader () {
+		this ( null );
+	}
+
+	public RDFStreamLoader ( BJ batchJob, ModelBatchCollector batchCollector ) {
+		super ( batchJob, batchCollector );
+	}
+
+	public RDFStreamLoader ( BJ batchJob ) {
+		this ( batchJob, new ModelBatchCollector () );
+	}
+	
+
 	public void process ( InputStream rdfInput, Object... opts )
 	{
 		String base = null;

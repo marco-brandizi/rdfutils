@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 
 import org.apache.jena.query.Dataset;
 import org.apache.jena.query.ReadWrite;
@@ -48,7 +49,7 @@ public class RDFStreamLoaderTest
 	{
 		AtomicBoolean flag = new AtomicBoolean ( false ) ;
 
-		RDFStreamLoader loader = new RDFStreamLoader ();
+		RDFStreamLoader<Consumer<Model>> loader = new RDFStreamLoader<> ();
 		loader.setBatchJob ( model -> 
 		{
 			flag.set ( true );
@@ -71,8 +72,8 @@ public class RDFStreamLoaderTest
 		AtomicInteger chunksCount = new AtomicInteger ( 0 );
 		Model umodel = ModelFactory.createDefaultModel ();
 		
-		RDFStreamLoader loader = new RDFStreamLoader ();
-		loader.setBatchMaxSize ( chunkSize );
+		RDFStreamLoader<Consumer<Model>> loader = new RDFStreamLoader<> ();
+		loader.getBatchCollector ().setMaxBatchSize ( chunkSize );
 		loader.setBatchJob ( model -> 
 		{
 			umodel.enterCriticalSection ( Lock.WRITE );
@@ -103,15 +104,17 @@ public class RDFStreamLoaderTest
 		
 		try
 		{
-			RDFStreamLoader loader = new RDFStreamLoader ();			
+			RDFStreamLoader<Consumer<Model>> loader = new RDFStreamLoader<> ();
 			TDBLoadingHandler handler = new TDBLoadingHandler ( dataSet ); 
 			loader.setBatchJob ( handler );
-			int chunkSize = 10;
+			int chunkSize = 100;
 			AtomicInteger chunksCount = new AtomicInteger ( 0 );
-			loader.setBatchMaxSize ( chunkSize );
-			loader.setBatchJob ( handler.andThen ( 
-				//m -> log.info ( "Chunk #{}", chunksCount.getAndIncrement () ) 
-				m -> chunksCount.getAndIncrement () 
+			loader.getBatchCollector ().setMaxBatchSize ( chunkSize );
+			loader.setBatchJob ( handler.andThen (
+				m -> { 
+					log.info ( "Chunk #{}", chunksCount.getAndIncrement () ); 
+					chunksCount.getAndIncrement ();
+				}
 			));
 			
 			loader.process ( "target/test-classes/dbpedia_berlin.rdf", null, getLangOrFormat (  "RDFXML"  ).getRight ());
