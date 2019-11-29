@@ -19,14 +19,14 @@ import org.apache.jena.sparql.core.Quad;
 import uk.ac.ebi.utils.threading.batchproc.BatchProcessor;
 
 /**
- * A multi-thread RDF importer based on {@link BatchProcessor} and {@link ModelBatchCollector}.
+ * <p>A multi-thread RDF importer based on {@link BatchProcessor} and {@link ModelBatchCollector}.</p>
  * 
- * This class is a skeleton that parses an input in the {@link #process(InputStream, String, Lang) process() methods}
+ * <p>This class is a skeleton that parses an input in the {@link #process(InputStream, String, Lang) process() methods}
  * below, sequentially splits it into multiple {@link Model} instances and passes them to parallel
  * {@link #getBatchJob() consumers}. Hence, you need to define something to do with the input RDF via such 
- * {@link #setBatchJob(java.util.function.Consumer) consumer}.
+ * {@link #setBatchJob(java.util.function.Consumer) consumer}.</p>
  * 
- * See unit tests for an example of use.
+ * <p>See unit tests for an example of use.</p>
  *
  * @author brandizi
  * <dl><dt>Date:</dt><dd>1 Dec 2017</dd></dl>
