@@ -4,7 +4,7 @@
 
   <groupId>info.marcobrandizi</groupId>
   <artifactId>rdfutils</artifactId>
-  <version>3.0.1-SNAPSHOT</version>
+  <version>3.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>rdfutils</name>
@@ -48,7 +48,7 @@
 			<dependency>
 			  <groupId>uk.ac.ebi</groupId>
 			  <artifactId>jutils</artifactId>
-		  		<version>9.0.1-SNAPSHOT</version>
+		  		<version>10.0-SNAPSHOT</version>
 			</dependency>
 	
 			<dependency>
