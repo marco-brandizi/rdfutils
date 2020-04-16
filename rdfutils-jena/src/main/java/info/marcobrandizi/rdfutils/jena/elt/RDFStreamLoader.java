@@ -17,6 +17,7 @@ import org.apache.jena.riot.system.StreamRDF;
 import org.apache.jena.sparql.core.Quad;
 
 import uk.ac.ebi.utils.threading.batchproc.BatchProcessor;
+import uk.ac.ebi.utils.threading.batchproc.ItemizedBatchProcessor;
 
 /**
  * <p>A multi-thread RDF importer based on {@link BatchProcessor} and {@link ModelBatchCollector}.</p>
@@ -28,6 +29,9 @@ import uk.ac.ebi.utils.threading.batchproc.BatchProcessor;
  * 
  * <p>See unit tests for an example of use.</p>
  *
+ * <p>Note that this isn't an {@link ItemizedBatchProcessor}, because the input processing isn't based on an 
+ * item-by-item reading, but on {@link RDFDataMgr} sending triples to our own {@link StreamReader}.</p>
+ * 
  * @author brandizi
  * <dl><dt>Date:</dt><dd>1 Dec 2017</dd></dl>
  *
