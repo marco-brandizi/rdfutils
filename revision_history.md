@@ -4,8 +4,11 @@
   * **FROM NOW ON, JDK < 11 IS NO LONGER SUPPORTED**. rdfutils will possibly work with 1.8 for 
   a while (until we start introducing incompatible changes), but that's not officially supported.
 
-## 2.1.1-SNAPSHOT
+## 2.1.2-SNAPSHOT
   * Just started
+
+## 2.1.1
+  * Release to link jutils 9.1
 
 ## 2.1
   * (rdf-utils-jena) More interfaces added to `info.marcobrandizi.rdfutils.jena.SparqlBasedTester`.
