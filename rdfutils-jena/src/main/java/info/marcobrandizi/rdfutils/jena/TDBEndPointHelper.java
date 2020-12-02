@@ -9,7 +9,7 @@ import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.system.Txn;
-import org.apache.jena.tdb.TDBFactory;
+import org.apache.jena.tdb2.TDB2Factory;
 
 /**
  * A {@link SparqlEndPointHelper} for Jena TDB triple stores.. 
@@ -50,7 +50,7 @@ public class TDBEndPointHelper extends SparqlEndPointHelper implements AutoClose
 			log.debug ( "Setting TDB to '{}'", tdbPath );
 			
 			this.tdbPath = tdbPath;
-			this.dataSet = TDBFactory.createDataset ( tdbPath );
+			this.dataSet = TDB2Factory.connectDataset ( tdbPath );
 		});
 	}
 
