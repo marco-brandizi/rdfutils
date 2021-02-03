@@ -3,3 +3,5 @@
 /.settings
 /.project
 .DS_Store
+/ci-build/build.sh
+/ci-build/install.sh

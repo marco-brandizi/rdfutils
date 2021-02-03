@@ -2,8 +2,8 @@
   <servers>
     <server>
       <id>mbrandizi.jfrog.io</id>
-      <username>${env.REPO_USER}</username>
-      <password>${env.REPO_PWD}</password>
+      <username>${env.BRANDIZI_REPO_USER}</username>
+      <password>${env.BRANDIZI_REPO_PWD}</password>
     </server>
   </servers>
 </settings>
