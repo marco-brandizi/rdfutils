@@ -13,7 +13,7 @@
  
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jena.version>3.14.0</jena.version>
+    <jena.version>3.17.0</jena.version>
   </properties>
     
   <scm>
