@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QuerySolution;
+import org.apache.jena.query.QuerySolutionMap;
 import org.apache.jena.rdf.model.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,8 +49,12 @@ public abstract class SparqlEndPointHelper
 
 		long[] ctr = { 0L };
 		
-		qx.execSelect ().forEachRemaining ( row -> { 
-			action.accept ( row ); 
+		qx.execSelect ().forEachRemaining ( row -> {
+			// Doing a clone after having observed trnasaction timeouts with TDB
+			var clonedRow = new QuerySolutionMap ();
+			clonedRow.addAll ( row );
+			
+			action.accept ( clonedRow ); 
 			if ( ++ctr [ 0 ] % 100000 == 0 ) log.info ( "{}: {} SPARQL tuples read from RDF", logPrefix, ctr [ 0 ] ); 
 		});
 		
