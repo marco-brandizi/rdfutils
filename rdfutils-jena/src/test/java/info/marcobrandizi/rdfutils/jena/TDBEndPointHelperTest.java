@@ -69,7 +69,7 @@ public class TDBEndPointHelperTest
 		}
 	}
 	
-	@Test //@Ignore ( "Not a real test, used to verify the performance in rdf2pg" )
+	@Test @Ignore ( "Not a real test, used to verify the performance in rdf2pg" )
 	public void testProcessSelectWithBatchProc () throws IOException
 	{
 		try ( var proc = new MyBatchProcessor () )
