@@ -7,6 +7,7 @@ import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.query.QuerySolution;
+import org.apache.jena.query.QuerySolutionMap;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.system.Txn;
 import org.apache.jena.tdb2.TDB2Factory;
@@ -69,12 +70,12 @@ public class TDBEndPointHelper extends SparqlEndPointHelper implements AutoClose
 	 * Wraps {@link SparqlEndPointHelper#processSelect(String, String, Consumer)} into a TDB transaction.
 	 */
 	@Override
-	public long processSelect ( String logPrefix, String sparql, Consumer<QuerySolution> action )
+	public long processSelect ( String logPrefix, String sparql, Consumer<QuerySolution> action, QuerySolutionMap params )
 	{	
 		Dataset ds = this.getDataSet ();
 
 		long result[] = { 0 }; 
- 		Txn.executeRead ( ds, () -> result [ 0 ] = super.processSelect ( logPrefix, sparql, action ) );
+ 		Txn.executeRead ( ds, () -> result [ 0 ] = super.processSelect ( logPrefix, sparql, action, params ) );
 		return result [ 0 ];
 	}
 
@@ -84,14 +85,16 @@ public class TDBEndPointHelper extends SparqlEndPointHelper implements AutoClose
 	 * Similarly to {@link #processSelect(String, String, Consumer)}, wraps the operation into a transaction. 
 	 */
 	@Override
-	public Model processConstruct ( String logPrefix, String sparqlConstruct, Consumer<Model> action, Model initialModel )
+	public Model processConstruct (
+		String logPrefix, String sparqlConstruct, Consumer<Model> action, Model initialModel, QuerySolutionMap params
+	)
 	{
 		Dataset ds = this.getDataSet ();
 
 		Model result[] = { null }; 
  		Txn.executeRead (
  			ds,
- 			() -> result [ 0 ] = super.processConstruct ( logPrefix, sparqlConstruct, action, initialModel )
+ 			() -> result [ 0 ] = super.processConstruct ( logPrefix, sparqlConstruct, action, initialModel, params )
  		);
 		return result [ 0 ];
 	}

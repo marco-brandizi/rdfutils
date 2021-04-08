@@ -42,10 +42,11 @@ public abstract class SparqlEndPointHelper
 	 *  
 	 * @param logPrefix operation name, used for logging.
 	 */
-	public long processSelect ( String logPrefix, String sparqlSelect, Consumer<QuerySolution> action ) 
+	public long processSelect ( String logPrefix, String sparqlSelect, Consumer<QuerySolution> action, QuerySolutionMap params ) 
 	{	
 		Query query = getQuery ( sparqlSelect );
 		QueryExecution qx = getQueryExecutor ( query );
+		if ( params != null ) qx.setInitialBinding ( params );
 
 		long[] ctr = { 0L };
 		
@@ -62,19 +63,35 @@ public abstract class SparqlEndPointHelper
 		return ctr [ 0 ];		
 	}
 	
-	public void processConstruct ( String logPrefix, String sparqlConstruct, Consumer<Model> action ) {
-		processConstruct ( logPrefix, sparqlConstruct, action, null );
+	public long processSelect ( String logPrefix, String sparqlSelect, Consumer<QuerySolution> action )
+	{
+		return this.processSelect ( logPrefix, sparqlSelect, action, null );
 	}
 	
-	public Model processConstruct ( String logPrefix, String sparqlConstruct, Consumer<Model> action, Model initialModel )
+		
+	
+	public Model processConstruct ( 
+		String logPrefix, String sparqlConstruct, Consumer<Model> action, Model initialModel, QuerySolutionMap params 
+	)
 	{
 		Query query = getQuery ( sparqlConstruct );
 		QueryExecution qx = getQueryExecutor ( query );
+		if ( params != null ) qx.setInitialBinding ( params );
 		
 		Model result = initialModel == null ? qx.execConstruct () : qx.execConstruct ( initialModel );
 		action.accept ( result );
 		return result;
 	}
+	
+	public Model processConstruct ( String logPrefix, String sparqlConstruct, Consumer<Model> action ) {
+		return processConstruct ( logPrefix, sparqlConstruct, action, null );
+	}
+
+	public Model processConstruct ( String logPrefix, String sparqlConstruct, Consumer<Model> action, Model initialModel )
+	{
+		return processConstruct ( logPrefix, sparqlConstruct, action, initialModel, null );
+	}
+	
 	
 	
 	/**
