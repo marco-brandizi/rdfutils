@@ -42,25 +42,37 @@ public abstract class SparqlEndPointHelper
 	 *  
 	 * @param logPrefix operation name, used for logging.
 	 */
-	public long processSelect ( String logPrefix, String sparqlSelect, Consumer<QuerySolution> action, QuerySolutionMap params ) 
+	public long processSelect ( String logPrefix, Query sparqlSelect, Consumer<QuerySolution> action, QuerySolutionMap params ) 
 	{	
-		Query query = getQuery ( sparqlSelect );
-		QueryExecution qx = getQueryExecutor ( query );
-		if ( params != null ) qx.setInitialBinding ( params );
-
-		long[] ctr = { 0L };
-		
-		qx.execSelect ().forEachRemaining ( row -> {
-
-			// Doing a clone after having observed transaction timeouts with TDB
-			var clonedRow = new QuerySolutionMap ();
-			clonedRow.addAll ( row );
-			action.accept ( clonedRow );
+		try ( QueryExecution qx = getQueryExecutor ( sparqlSelect ) )
+		{
+			if ( params != null ) qx.setInitialBinding ( params );
+	
+			long[] ctr = { 0L };
 			
-			if ( ++ctr [ 0 ] % 100000 == 0 ) log.info ( "{}: {} SPARQL tuples read from RDF", logPrefix, ctr [ 0 ] ); 
-		});
-		
-		return ctr [ 0 ];		
+			qx.execSelect ().forEachRemaining ( row -> {
+
+				// Doing a clone after having observed transaction timeouts with TDB
+				var clonedRow = new QuerySolutionMap ();
+				clonedRow.addAll ( row );
+				action.accept ( clonedRow );
+				
+				if ( ++ctr [ 0 ] % 100000 == 0 ) log.info ( "{}: {} SPARQL tuples read from RDF", logPrefix, ctr [ 0 ] ); 
+			});
+			
+			return ctr [ 0 ];
+		}
+	}
+	
+	public long processSelect ( String logPrefix, Query sparqlSelect, Consumer<QuerySolution> action )
+	{
+		return this.processSelect ( logPrefix, sparqlSelect, action, null );
+	}
+	
+	
+	public long processSelect ( String logPrefix, String sparqlSelect, Consumer<QuerySolution> action, QuerySolutionMap params ) 
+	{
+		return processSelect ( logPrefix, getQuery ( sparqlSelect ), action, params );		
 	}
 	
 	public long processSelect ( String logPrefix, String sparqlSelect, Consumer<QuerySolution> action )
@@ -68,30 +80,48 @@ public abstract class SparqlEndPointHelper
 		return this.processSelect ( logPrefix, sparqlSelect, action, null );
 	}
 	
-		
 	
+	
+	public Model processConstruct ( 
+		String logPrefix, Query sparqlConstruct, Consumer<Model> action, Model initialModel, QuerySolutionMap params 
+	)
+	{
+		try ( QueryExecution qx = getQueryExecutor ( sparqlConstruct ) )
+		{
+			if ( params != null ) qx.setInitialBinding ( params );
+		
+			Model result = initialModel == null ? qx.execConstruct () : qx.execConstruct ( initialModel );
+			action.accept ( result );
+			return result;
+		}
+	}
+	
+	public Model processConstruct ( String logPrefix, Query sparqlConstruct, Consumer<Model> action, Model initialModel )
+	{
+		return processConstruct ( logPrefix, sparqlConstruct, action, initialModel, null );
+	}
+	
+	public Model processConstruct ( String logPrefix, Query sparqlConstruct, Consumer<Model> action ) {
+		return processConstruct ( logPrefix, sparqlConstruct, action, null );
+	}
+	
+	
+		
 	public Model processConstruct ( 
 		String logPrefix, String sparqlConstruct, Consumer<Model> action, Model initialModel, QuerySolutionMap params 
 	)
 	{
-		Query query = getQuery ( sparqlConstruct );
-		QueryExecution qx = getQueryExecutor ( query );
-		if ( params != null ) qx.setInitialBinding ( params );
-		
-		Model result = initialModel == null ? qx.execConstruct () : qx.execConstruct ( initialModel );
-		action.accept ( result );
-		return result;
-	}
+		return processConstruct ( logPrefix, getQuery ( sparqlConstruct ), action, initialModel, params );
+	}	
 	
-	public Model processConstruct ( String logPrefix, String sparqlConstruct, Consumer<Model> action ) {
-		return processConstruct ( logPrefix, sparqlConstruct, action, null );
-	}
-
 	public Model processConstruct ( String logPrefix, String sparqlConstruct, Consumer<Model> action, Model initialModel )
 	{
 		return processConstruct ( logPrefix, sparqlConstruct, action, initialModel, null );
 	}
 	
+	public Model processConstruct ( String logPrefix, String sparqlConstruct, Consumer<Model> action ) {
+		return processConstruct ( logPrefix, sparqlConstruct, action, null );
+	}
 	
 	
 	/**

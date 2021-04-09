@@ -67,10 +67,10 @@ public class TDBEndPointHelper extends SparqlEndPointHelper implements AutoClose
 	}
 
 	/**
-	 * Wraps {@link SparqlEndPointHelper#processSelect(String, String, Consumer)} into a TDB transaction.
+	 * Wraps {@link SparqlEndPointHelper#processSelect(String, Query, Consumer, QuerySolutionMap)} into a TDB transaction.
 	 */
 	@Override
-	public long processSelect ( String logPrefix, String sparql, Consumer<QuerySolution> action, QuerySolutionMap params )
+	public long processSelect ( String logPrefix, Query sparql, Consumer<QuerySolution> action, QuerySolutionMap params )
 	{	
 		Dataset ds = this.getDataSet ();
 
@@ -82,11 +82,11 @@ public class TDBEndPointHelper extends SparqlEndPointHelper implements AutoClose
 	
 	
 	/**
-	 * Similarly to {@link #processSelect(String, String, Consumer)}, wraps the operation into a transaction. 
+	 * Similarly to {@link #processConstruct(String, String, Consumer, Model, QuerySolutionMap)}, wraps the operation into a transaction. 
 	 */
 	@Override
 	public Model processConstruct (
-		String logPrefix, String sparqlConstruct, Consumer<Model> action, Model initialModel, QuerySolutionMap params
+		String logPrefix, Query sparqlConstruct, Consumer<Model> action, Model initialModel, QuerySolutionMap params
 	)
 	{
 		Dataset ds = this.getDataSet ();
