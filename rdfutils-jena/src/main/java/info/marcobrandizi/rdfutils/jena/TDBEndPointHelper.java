@@ -13,7 +13,7 @@ import org.apache.jena.system.Txn;
 import org.apache.jena.tdb2.TDB2Factory;
 
 /**
- * A {@link SparqlEndPointHelper} for Jena TDB triple stores.. 
+ * A {@link SparqlEndPointHelper} for Jena TDB triple stores.
  *
  * @author brandizi
  * <dl><dt>Date:</dt><dd>24 Jul 2018</dd></dl>
@@ -86,7 +86,7 @@ public class TDBEndPointHelper extends SparqlEndPointHelper implements AutoClose
 	 */
 	@Override
 	public Model processConstruct (
-		String logPrefix, Query sparqlConstruct, Consumer<Model> action, Model initialModel, QuerySolutionMap params
+		Query sparqlConstruct, Consumer<Model> action, Model initialModel, QuerySolutionMap params
 	)
 	{
 		Dataset ds = this.getDataSet ();
@@ -94,7 +94,7 @@ public class TDBEndPointHelper extends SparqlEndPointHelper implements AutoClose
 		Model result[] = { null }; 
  		Txn.executeRead (
  			ds,
- 			() -> result [ 0 ] = super.processConstruct ( logPrefix, sparqlConstruct, action, initialModel, params )
+ 			() -> result [ 0 ] = super.processConstruct ( sparqlConstruct, action, initialModel, params )
  		);
 		return result [ 0 ];
 	}

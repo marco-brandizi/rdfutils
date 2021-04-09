@@ -9,7 +9,6 @@ import java.io.UncheckedIOException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.shared.JenaException;
 import org.junit.Assert;
 import org.slf4j.Logger;
@@ -30,7 +29,7 @@ import uk.ac.ebi.utils.exceptions.UncheckedFileNotFoundException;
  */
 public class SparqlBasedTester
 {
-	private Model model;
+	private ModelEndPointHelper endpointHelper;
 	private String sparqlPrefixes = "";
 	
 	private Logger log = LoggerFactory.getLogger ( this.getClass () );
@@ -41,7 +40,7 @@ public class SparqlBasedTester
 	 */
 	public SparqlBasedTester ( Model model, String sparqlPrefixes )
 	{
-		this.model = model == null ? ModelFactory.createDefaultModel () : model;
+		this.endpointHelper = new ModelEndPointHelper ( model );
 		if ( this.sparqlPrefixes != null ) this.sparqlPrefixes = sparqlPrefixes;
 	}
 	
@@ -57,7 +56,7 @@ public class SparqlBasedTester
 	public SparqlBasedTester ( String url, String sparqlPrefixes )
 	{
 		this ( (Model) null, sparqlPrefixes );
-		model.read ( url );
+		endpointHelper.getModel ().read ( url );
 	}
 	
 	/**
@@ -79,7 +78,7 @@ public class SparqlBasedTester
 	{
 		sparql = sparqlPrefixes + sparql;
 		try {
-			Assert.assertTrue ( errorMessage, SparqlUtils.ask ( sparql, model ) );
+			Assert.assertTrue ( errorMessage, endpointHelper.ask ( sparql ) );
 		}
 		catch ( JenaException ex ) 
 		{
