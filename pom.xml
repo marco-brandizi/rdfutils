@@ -15,6 +15,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jena.version>3.17.0</jena.version>
     <jutils.version>10.0-SNAPSHOT</jutils.version>
+	  <commonsrdf.version>0.5.0</commonsrdf.version>
   </properties>
     
   <scm>
@@ -38,6 +39,18 @@
 				<groupId>org.apache.jena</groupId>
 				<artifactId>jena-osgi</artifactId>
 			  <version>${jena.version}</version>
+			</dependency>
+
+			<dependency>
+			  <groupId>org.apache.commons</groupId>
+			  <artifactId>commons-rdf-jena</artifactId>
+			  <version>${commonsrdf.version}</version>
+			  <exclusions>
+					<exclusion>
+						<groupId>org.apache.jena</groupId>
+						<artifactId>jena-osgi</artifactId>
+					</exclusion>		  
+			  </exclusions>
 			</dependency>
 
 			<dependency>
@@ -170,21 +183,7 @@
 	
 	
   <repositories>
-
-		<!-- jutils -->
-		<repository>
-	    <id>EBIBioSamples-GH-repo</id>
-	    <url>https://raw.githubusercontent.com/EBIBioSamples/EBIBioSamples.github.io/maven-repo</url>
-	    <snapshots><enabled>true</enabled></snapshots>
-    </repository>
-		
-    <!--  repository>
-    	<id>marcobrandizi.info</id>
-			<url>http://www.marcobrandizi.info:8081/artifactory/maven</url>
-	    <snapshots><enabled>true</enabled></snapshots>
-	    <releases><enabled>true</enabled></releases>
-    </repository-->
-    
+		    
     <repository>
     	<id>mbrandizi.jfrog.io</id>
 			<url>https://mbrandizi.jfrog.io/artifactory/maven</url>
@@ -196,16 +195,6 @@
 
 
 	<distributionManagement>
-
-    <!-- snapshotRepository>
-    		<id>marcobrandizi.info</id>
-			<url>http://www.marcobrandizi.info:8081/artifactory/maven</url>
-    </snapshotRepository>
-
-    <repository>
-    		<id>marcobrandizi.info</id>
-			<url>http://www.marcobrandizi.info:8081/artifactory/maven</url>
-    </repository -->
 
     <snapshotRepository>
     	<id>mbrandizi.jfrog.io</id>
