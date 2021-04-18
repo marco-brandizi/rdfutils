@@ -13,6 +13,7 @@ import org.apache.jena.graph.Triple;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
+import org.apache.jena.riot.RDFParser;
 import org.apache.jena.riot.system.StreamRDF;
 import org.apache.jena.sparql.core.Quad;
 
@@ -141,7 +142,8 @@ public class RDFStreamLoader<BJ extends Consumer<Model>> extends BatchProcessor<
 	public void process ( InputStream rdfInput, String base, Lang hintLang )
 	{
 		StreamReader streamReader = new StreamReader ();
-		RDFDataMgr.parse ( streamReader, rdfInput, base, hintLang );
+		// This is as suggested by previously-deprecated method in RDFStreamLoader
+		RDFParser.source ( rdfInput ).lang ( hintLang ).base(base).parse ( streamReader );
 		this.waitExecutor ( "Waiting for all RDF import jobs to finish" );
 		log.info ( "RDF import terminated" );
 	}

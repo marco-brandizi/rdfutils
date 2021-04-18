@@ -7,10 +7,15 @@ import java.util.function.Consumer;
 
 import org.apache.jena.query.Dataset;
 import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.riot.Lang;
+import org.apache.jena.system.Txn;
 import org.apache.jena.tdb.TDBLoader;
-import org.apache.jena.tdb.store.DatasetGraphTDB;
-import org.apache.jena.tdb.sys.TDBInternal;
+import org.apache.jena.tdb2.TDB2;
+import org.apache.jena.tdb2.TDB2Factory;
+import org.apache.jena.tdb2.loader.Loader;
+import org.apache.jena.tdb2.store.DatasetGraphTDB;
+import org.apache.jena.tdb2.sys.TDBInternal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,8 +24,6 @@ import com.gc.iotools.stream.os.OutputStreamToInputStream;
 
 /**
  * Can be used with {@link RDFStreamLoader} to load data into a TDB triple store.
- * 
- * Note that this is experimental. TDB seems to work well only with the command line loader.
  *
  * @author brandizi
  * <dl><dt>Date:</dt><dd>19 Dec 2017</dd></dl>
@@ -43,16 +46,19 @@ public class TDBLoadingHandler implements Consumer<Model>
 	@Override
 	public void accept ( Model model )
 	{
+		/*
 		try ( 
 			// This is an out wrapper that sends the received output to an input stream and then runs a thread
 			// doing the TDB loading with such input stream (see http://io-tools.sourceforge.net/easystream/tutorial/tutorial.html)
-			OutputStreamToInputStream<Void> rdfout = new OutputStreamToInputStream<Void>( true, ExecutionModel.STATIC_THREAD_POOL ) 
+			var rdfout = new OutputStreamToInputStream<Void>( true, ExecutionModel.STATIC_THREAD_POOL ) 
 			{
 		    @Override
 		    protected Void doRead ( InputStream rdfin ) throws Exception 
 		    {
 		    		synchronized ( dataSet ) {
+		    			
 			    		DatasetGraphTDB gtdb = TDBInternal.getDatasetGraphTDB ( dataSet );
+			    		TDBLoader.load ( gtdb, rdfin, Lang.NQUADS, false, false );
 			    		TDBLoader.load ( gtdb, rdfin, false );
 					}
 		    		return null;
@@ -68,13 +74,13 @@ public class TDBLoadingHandler implements Consumer<Model>
 		catch ( IOException ex ) {
 			throw new UncheckedIOException ( "Error while loading RDF data into support TDB: " + ex.getMessage (), ex );
 		}
-
-		/*
+		*/
+		
 		Txn.executeWrite ( this.dataSet, () -> {
 			log.debug ( "Writing {} triple(s) to TDB", model.size () );
 			dataSet.getDefaultModel ().add ( model );
 			log.debug ( "{} triple(s) written to TDB", model.size () );
-		}); */
+		});
 	}
 
 	public Dataset getDataSet ()
