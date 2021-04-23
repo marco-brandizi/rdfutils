@@ -22,6 +22,8 @@ import uk.ac.ebi.utils.exceptions.TooManyValuesException;
 
 /**
  * Set of utilities to ease the access Jena SPARQL interfaces.
+ * 
+ * TODO: separate synchronised and unsynchronised implementations.
  *
  * @author brandizi
  * <dl><dt>Date:</dt><dd>17 Jan 2017</dd></dl>
@@ -31,6 +33,13 @@ public class JenaGraphUtils extends GraphUtils<Model, RDFNode, Resource, Propert
 {
 	public static final JenaGraphUtils JENAUTILS = new JenaGraphUtils ();
 	
+	protected JenaGraphUtils () {}
+
+	/** @return {@link JenaGraphUtils#JENAUTILS} */
+	public static JenaGraphUtils getInstance () {
+		return JENAUTILS;
+	}
+
 	@Override
 	public Optional<RDFNode> getObject ( Model m, Resource s, Property p, boolean errorIfMultiple )
 	{
@@ -64,7 +73,7 @@ public class JenaGraphUtils extends GraphUtils<Model, RDFNode, Resource, Propert
 	)
 	{
 		this.checkNonNullTriple ( "assertLiteral", subj, prop, literal );
-		doWriteVoid ( m, () -> m.add ( subj, prop, literal ) );
+		doWrite ( m, () -> m.add ( subj, prop, literal ) );
 		return this;
 	}
 
@@ -74,7 +83,7 @@ public class JenaGraphUtils extends GraphUtils<Model, RDFNode, Resource, Propert
 	)
 	{
 		this.checkNonNullTriple ( "assertResource", subj, prop, obj );
-		doWriteVoid ( m, () -> m.add ( subj, prop, obj) );
+		doWrite ( m, () -> m.add ( subj, prop, obj) );
 		return this;
 	}
 
@@ -178,10 +187,10 @@ public class JenaGraphUtils extends GraphUtils<Model, RDFNode, Resource, Propert
 	}
 
 	/**
-	 * Invokes {@link #doSyncVoid(Model, Supplier, boolean)} with {@link Lock#READ} 
+	 * Invokes {@link #doSync(Model, Supplier, boolean)} with {@link Lock#READ} 
 	 */	
-	public void doReadVoid ( Model m, Runnable op ) {
-		this.doSyncVoid ( m, op, Lock.READ );
+	public void doRead ( Model m, Runnable op ) {
+		this.doSync ( m, op, Lock.READ );
 	}
 
 	/**
@@ -191,12 +200,12 @@ public class JenaGraphUtils extends GraphUtils<Model, RDFNode, Resource, Propert
 	{
 		return this.doSync ( m, op, Lock.WRITE );
 	}
-
+	
 	/**
-	 * Invokes {@link #doSyncVoid(Model, Supplier, boolean)} with {@link Lock#WRITE} 
+	 * Invokes {@link #doSync(Model, Supplier, boolean)} with {@link Lock#WRITE} 
 	 */
-	public void doWriteVoid ( Model m, Runnable op ) {
-		this.doSyncVoid ( m, op, Lock.WRITE );
+	public void doWrite ( Model m, Runnable op ) {
+		this.doSync ( m, op, Lock.WRITE );
 	}
 
 	/**
@@ -223,7 +232,7 @@ public class JenaGraphUtils extends GraphUtils<Model, RDFNode, Resource, Propert
 	 * pass a {@link Runnable}, without any need for a return statement). 
 	 *  
 	 */
-	public void doSyncVoid ( Model m, Runnable op, boolean isReadOnly ) {
+	public void doSync ( Model m, Runnable op, boolean isReadOnly ) {
 		this.doSync ( m, () -> { op.run (); return null; }, isReadOnly );
 	}
 

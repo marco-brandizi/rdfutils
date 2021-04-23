@@ -18,6 +18,13 @@
 	  independent on specific RDF frameworks (eg, Jena or RDF4j).
   </description>
 
+	<!-- 
+		TODO: probably to be dismissed, the Apache RDF commons doesn't seem active anymore, I don't
+		have much time to maintain a multi-framework library that I use with Jena only. 
+		
+		Moreover, there are simpler ways to bridge Jena and RDF:
+		https://github.com/afs/JenaSesame   
+	-->
  
   <dependencies>
 

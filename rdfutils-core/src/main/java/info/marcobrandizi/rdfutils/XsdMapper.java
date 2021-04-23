@@ -76,7 +76,9 @@ public class XsdMapper
 	{
 		try
 		{
-			final DatatypeFactory datatypeFactory = DatatypeFactory.newInstance ();
+			final var datatypeFactory = DatatypeFactory.newInstance ();
+			
+			// TODO: Spring and Open/Close principle
 			
 			@SuppressWarnings ( "rawtypes" )
 			LiteralType types[] = new LiteralType[] { 

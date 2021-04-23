@@ -20,11 +20,13 @@ import info.marcobrandizi.rdfutils.exceptions.RdfException;
 import uk.ac.ebi.utils.exceptions.TooManyValuesException;
 
 /**
- * An implementatin of {@link GraphUtils} based on <a href = "https://commons.apache.org/proper/commons-rdf/">Apache Commons-RDF</a>.
+ * An implementation of {@link GraphUtils} based on <a href = "https://commons.apache.org/proper/commons-rdf/">Apache Commons-RDF</a>.
  * that allows for independence of a specific RDF framework implementation. 
  *
  * @author brandizi
  * <dl><dt>Date:</dt><dd>17 Jan 2017</dd></dl>
+ *
+ * TODO: separate synchronised and unsynchronised implementations.
  *
  */
 public class CommonsRDFUtils extends GraphUtils<Graph, RDFTerm, BlankNodeOrIRI, IRI, Literal>
@@ -33,41 +35,50 @@ public class CommonsRDFUtils extends GraphUtils<Graph, RDFTerm, BlankNodeOrIRI, 
 
 	private static Logger log = LoggerFactory.getLogger ( CommonsRDFUtils.class );
 			
-	private static RDF defaultRdf;
+	private static RDF rdf;
 	
-	private RDF rdf;
 	
-	private synchronized static RDF getDefaultRdf () 
+	protected CommonsRDFUtils ()
 	{
-		if ( defaultRdf != null ) return defaultRdf;
-		
+		super ();
+	}
+
+	/**
+	 * @return {@link CommonsRDFUtils#COMMUTILS}.-
+	 */
+	public static CommonsRDFUtils getInstance ()
+	{
+		return COMMUTILS;
+	}
+	
+
+	static 
+	{
 		ServiceLoader<RDF> loader = ServiceLoader.load ( RDF.class );
 		Iterator<RDF> itr = loader.iterator();
 		
 		String noInstAvalMsg = "No implementation found for Commons RDF, please, review your dependencies/classpath";
 		if ( !itr.hasNext () ) throw new RdfException ( noInstAvalMsg );
 
-		defaultRdf = itr.next();
+		rdf = itr.next();
 		
 		String simpleFQN = "org.apache.commons.rdf.simple.SimpleRDF";
 		
 		// This is wrongly included in other implementations (https://issues.apache.org/jira/browse/COMMONSRDF-73)
 		// and we're not interested in it, so let's skip it and try to move to the next.
-		if ( simpleFQN.equals ( defaultRdf.getClass ().getName () ) )
+		if ( simpleFQN.equals ( rdf.getClass ().getName () ) )
 		{
 			if ( !itr.hasNext () ) throw new RdfException ( 
 				noInstAvalMsg + "(SimpleRDF is ignored by default, you must set up it with setRDF())" 
 			);
-			defaultRdf = itr.next ();
+			rdf = itr.next ();
 		}
 		
 		if ( itr.hasNext () && !simpleFQN.equals ( itr.next ().getClass ().getName () ) ) log.warn ( 
-			"More than one RDF instance available for Commons RDF, taking the first one ({})",  defaultRdf 
+			"More than one RDF instance available for Commons RDF, taking the first one ({})",  rdf 
 		);	
 		else
-			log.info ( "RDF Utils configured with {}", defaultRdf.getClass ().getName () );
-		
-		return defaultRdf;
+			log.info ( "RDF Utils configured with {}", rdf.getClass ().getName () );
 	}
 	
 	/**
@@ -87,13 +98,13 @@ public class CommonsRDFUtils extends GraphUtils<Graph, RDFTerm, BlankNodeOrIRI, 
 	 */
 	public RDF getRDF () 
 	{
-		if ( rdf == null ) this.setRDF ( getDefaultRdf () );
 		return rdf;
 	}
-	
-	public synchronized void setRDF ( RDF rdf ) {
-		if ( this.rdf != rdf ) this.rdf = rdf;
-	}
+
+// TODO: needed?!
+//	public synchronized void setRDF ( RDF rdf ) {
+//		if ( CommonsRDFUtils.rdf != rdf ) CommonsRDFUtils.rdf = rdf;
+//	}
 	
 	
 	@Override
