@@ -60,6 +60,18 @@ public abstract class GraphUtils<M, N, R extends N, P extends N, L extends N>
 	public abstract Optional<N> getObject ( M graphModel, R s, P p, boolean errorIfMultiple );
 
 
+	public Optional<R> getSubject ( M graphModel, String puri, String ouri, boolean errorIfMultiple ) {
+		return getSubject ( graphModel, uri2Property ( graphModel, puri ), uri2Resource ( graphModel, ouri ), errorIfMultiple );
+	}
+
+	public Optional<R> getSubject ( M graphModel, String puri, L literal, boolean errorIfMultiple ) {
+		return getSubject ( graphModel, uri2Property ( graphModel, puri ), literal, errorIfMultiple );
+	}
+	
+	public abstract Optional<R> getSubject ( M graphModel, P p, N o, boolean errorIfMultiple );
+	
+	
+	
 	/**
 	 * Defaults to errorIfMultiple = false
 	 */

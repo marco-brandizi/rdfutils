@@ -106,6 +106,31 @@ public class CommonsRDFUtils extends GraphUtils<Graph, RDFTerm, BlankNodeOrIRI, 
 //		if ( CommonsRDFUtils.rdf != rdf ) CommonsRDFUtils.rdf = rdf;
 //	}
 	
+
+	@Override
+	public Optional<BlankNodeOrIRI> getSubject ( Graph m, IRI p, RDFTerm o, boolean errorIfMultiple )
+	{
+		synchronized ( m )
+		{
+			@SuppressWarnings ( "unchecked" )
+			Iterator<Triple> itr = (Iterator<Triple>) m
+			  .stream ( null, p, o )
+			  .unordered ()
+			  .limit ( 2 )
+			  .iterator ();
+			
+			if ( !itr.hasNext () ) return Optional.empty ();
+			BlankNodeOrIRI result = itr.next ().getSubject ();
+			if ( itr.hasNext () ) 
+			{
+				String msg = String.format ( "more than one value for <%s>, <%s>", p.toString (), o.toString () );
+				if ( errorIfMultiple ) throw new TooManyValuesException ( msg );
+				log.warn ( msg );
+			}
+			return Optional.of ( result );
+		}	
+	}
+	
 	
 	@Override
 	public Optional<RDFTerm> getObject ( Graph m, BlankNodeOrIRI s, IRI p, boolean errorIfMultiple )

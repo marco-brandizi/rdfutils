@@ -13,6 +13,7 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.NodeIterator;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.RDFNode;
+import org.apache.jena.rdf.model.ResIterator;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.shared.Lock;
 import org.apache.jena.util.iterator.ExtendedIterator;
@@ -21,7 +22,7 @@ import info.marcobrandizi.rdfutils.GraphUtils;
 import uk.ac.ebi.utils.exceptions.TooManyValuesException;
 
 /**
- * Set of utilities to ease the access Jena SPARQL interfaces.
+ * Set of utilities to ease RDF manipulation via Jena interfaces..
  * 
  * TODO: separate synchronised and unsynchronised implementations.
  *
@@ -40,6 +41,26 @@ public class JenaGraphUtils extends GraphUtils<Model, RDFNode, Resource, Propert
 		return JENAUTILS;
 	}
 
+	
+	@Override
+	public Optional<Resource> getSubject ( Model m, Property p, RDFNode o, boolean errorIfMultiple )
+	{
+		return doRead ( m, () -> 
+		{
+			ResIterator itr = m.listSubjectsWithProperty ( p, o );
+			if ( !itr.hasNext () ) return Optional.empty ();
+			Resource result = itr.next ();
+			if ( itr.hasNext () ) 
+			{
+				String msg = String.format ( "More than one value for <%s>, <%s>", p.toString (), o.toString () );
+				if ( errorIfMultiple ) throw new TooManyValuesException ( msg );
+				log.warn ( msg );
+			}
+			return Optional.of ( result );
+		});
+	}
+	
+	
 	@Override
 	public Optional<RDFNode> getObject ( Model m, Resource s, Property p, boolean errorIfMultiple )
 	{
@@ -50,7 +71,7 @@ public class JenaGraphUtils extends GraphUtils<Model, RDFNode, Resource, Propert
 			RDFNode result = itr.next ();
 			if ( itr.hasNext () ) 
 			{
-				String msg = String.format ( "more than one value for <%s>, <%s>", s.toString (), p.toString () );
+				String msg = String.format ( "More than one value for <%s>, <%s>", s.toString (), p.toString () );
 				if ( errorIfMultiple ) throw new TooManyValuesException ( msg );
 				log.warn ( msg );
 			}
