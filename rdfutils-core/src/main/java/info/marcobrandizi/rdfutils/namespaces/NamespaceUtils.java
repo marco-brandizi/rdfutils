@@ -62,7 +62,7 @@ public class NamespaceUtils
 	
 	/** 
 	 * If there isn't any namespace for the prefix in the parameter (or no prefix can be computed),
-	 * returns the paramter unchanged. This can be used in cases where it's not known whether the parameter
+	 * returns the parameter unchanged. This can be used in cases where it's not known whether the parameter
 	 * is a shortened IRI or an already expanded one.
 	 */
 	public static String iriAny ( String possiblyPrefixedUri ) 
