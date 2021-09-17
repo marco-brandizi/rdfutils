@@ -24,13 +24,14 @@ fi
 if [[ ! -z "$VIRTUOSO_DOCKER_ENABLED" ]]; then
 	function isql_wrapper
 	{
-		docker exec -i virtuoso isql 1111 $VIRTUOSO_USER $VIRTUOSO_PASSWORD	exec="$@"
-	}	 
+		echo "(Virtuoso over Docker)"
+		docker exec -i virtuoso isql 1111 $VIRTUOSO_USER $VIRTUOSO_PASSWORD exec="$@"
+	}
 fi
 
 # You might have your custom version, as above  
 #
-if [[ -z "`type -t f`" ]]; then
+if [[ -z "`type -t isql_wrapper`" ]]; then
 	function isql_wrapper
 	{
   	$VIRTUOSO_BIN_DIR/isql 1111 $VIRTUOSO_USER $VIRTUOSO_PASSWORD exec="$@"
