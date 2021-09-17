@@ -20,10 +20,22 @@ then
   echo -e "\tWARNING: no JENA_HOME defined, Jena is needed by tools like sparql_unit_testing/"
 fi
 
-function isql_wrapper
-{
-  $VIRTUOSO_BIN_DIR/isql 1111 $VIRTUOSO_USER $VIRTUOSO_PASSWORD exec="$@"
-}
+
+if [[ ! -z "$VIRTUOSO_DOCKER_ENABLED" ]]; then
+	function isql_wrapper
+	{
+		docker exec -i virtuoso isql 1111 $VIRTUOSO_USER $VIRTUOSO_PASSWORD	exec="$@"
+	}	 
+fi
+
+# You might have your custom version, as above  
+#
+if [[ -z "`type -t f`" ]]; then
+	function isql_wrapper
+	{
+  	$VIRTUOSO_BIN_DIR/isql 1111 $VIRTUOSO_USER $VIRTUOSO_PASSWORD exec="$@"
+	}
+fi
 
 function message
 {
