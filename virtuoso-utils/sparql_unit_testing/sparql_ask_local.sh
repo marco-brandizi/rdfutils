@@ -1,6 +1,7 @@
 #
 # Works like sparql_ask.sh, but against a data file (using jena.)
 #
+set -e
 
 # Get the query, strip comments away, prepend common prefixes
 query_path="$1"

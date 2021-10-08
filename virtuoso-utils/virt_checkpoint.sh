@@ -4,6 +4,7 @@
 #
 # if the first argument is true, reports about the current loadings, only the no. of triples in the DB otherwise
 #
+set -e
 
 is_detail="$1"
 

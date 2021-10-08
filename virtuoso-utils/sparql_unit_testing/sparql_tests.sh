@@ -1,4 +1,6 @@
-#!/bin/sh
+#!/bin/bash
+set -x
+
 wdir="$(pwd)"
 cd "$(dirname '$0')"
 mydir="$(pwd)"

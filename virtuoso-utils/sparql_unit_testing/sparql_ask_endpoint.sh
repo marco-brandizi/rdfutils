@@ -4,6 +4,7 @@
 #  
 # It also spits out a lot of diagnostic output. Do 2>/dev/null if you don't want to see it.
 #
+set -e
 
 function url_encode {
   echo "$1" | python2.7 -c "import sys, urllib as ul; print ( ul.quote_plus ( sys.stdin.read() ) )"

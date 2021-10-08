@@ -1,9 +1,10 @@
 #
 #
+set -e
 
 cd `dirname $0`
 
-if [ "$1" == '-r' ] || [ "$1" == '--recursive' ]; then
+if [[ "$1" == '-r' ]] || [[ "$1" == '--recursive' ]]; then
   is_recursive='true'
   shift
 fi
@@ -11,7 +12,7 @@ fi
 src_dir="$1"
 graph="$2"
 
-if [[ $src_dir =~ ^(-h|--help)$ ]] || [ "$graph" == '' ]; then
+if [[ $src_dir =~ ^(-h|--help)$ ]] || [[ -z "$graph" ]]; then
 
   cat <<EOT
   
