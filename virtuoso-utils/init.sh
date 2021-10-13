@@ -25,7 +25,7 @@ if [[ ! -z "$VIRTUOSO_DOCKER_ENABLED" ]]; then
 	function isql_wrapper
 	{
 		echo "(Virtuoso over Docker)"
-		docker exec -i virtuoso isql 1111 $VIRTUOSO_USER $VIRTUOSO_PASSWORD exec="$@"
+		docker exec  virtuoso isql 1111 $VIRTUOSO_USER $VIRTUOSO_PASSWORD exec="$@"
 	}
 fi
 

@@ -35,7 +35,7 @@ ld_cmd='ld_dir'
 [[ "$is_recursive" ]] && ld_cmd="${ld_cmd}_all"
 
 message 'Cleaning-up'
-isql_wrapper "SPARQL CLEAR GRAPH <$graph>;"
+isql_wrapper "log_enable(3,1); SPARQL CLEAR GRAPH <$graph>;"
 isql_wrapper "delete from db.dba.load_list where ll_file like '$src_dir%';"
 isql_wrapper "$ld_cmd('$src_dir', '*', '$graph');"
 for i in seq $VIRTUOSO_JOBS
