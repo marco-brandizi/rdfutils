@@ -14,7 +14,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jena.version>4.1.0</jena.version>
-    <jutils.version>10.0-SNAPSHOT</jutils.version>
+    <jutils.version>10.0</jutils.version>
 	  <commonsrdf.version>1.0-SNAPSHOT</commonsrdf.version>
   </properties>
     
