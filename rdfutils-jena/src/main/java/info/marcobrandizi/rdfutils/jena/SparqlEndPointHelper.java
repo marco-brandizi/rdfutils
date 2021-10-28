@@ -204,7 +204,7 @@ public abstract class SparqlEndPointHelper
 	
 	public long processSelect ( Query sparqlSelect, Consumer<QuerySolution> action )
 	{
-		return this.processSelect ( sparqlSelect, action );
+		return this.processSelect ( sparqlSelect, action, null );
 	}
 	
 	
