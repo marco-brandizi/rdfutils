@@ -41,15 +41,15 @@
 		</dependency>
 
 		<dependency>
-		  <groupId>uk.ac.ebi</groupId>
-		  <artifactId>jutils-io</artifactId>
-	  	<scope>test</scope>
-		</dependency>
-
-		<dependency>
 		  <groupId>commons-codec</groupId>
 		  <artifactId>commons-codec</artifactId>
 		</dependency>  
+
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+	    <scope>test</scope>
+		</dependency>
 
   </dependencies>
 	  

@@ -1,6 +1,8 @@
 package info.marcobrandizi.rdfutils.jena;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
@@ -11,7 +13,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import uk.ac.ebi.utils.io.IOUtils;
 import uk.ac.ebi.utils.threading.batchproc.processors.SetBasedBatchProcessor;
 
 /**
@@ -40,7 +41,7 @@ public class TDBEndPointHelperTest
 
 		public void process () throws IOException
 		{
-			var sparql = IOUtils.readFile ( "/Users/brandizi/Documents/Work/RRes/ondex_git/ondex-knet-builder/ondex-knet-builder/modules/neo4j-export/src/main/assembly/resources/ondex_config/concept_rel_types.sparql" );
+			var sparql = Files.readString ( Path.of ( "/Users/brandizi/Documents/Work/RRes/ondex_git/ondex-knet-builder/ondex-knet-builder/modules/neo4j-export/src/main/assembly/resources/ondex_config/concept_rel_types.sparql" ) );
 
 			Consumer<Consumer<QuerySolution>> allSolProc = 
 			  solProc -> helper.processSelect ( "", sparql, solProc );
@@ -62,7 +63,7 @@ public class TDBEndPointHelperTest
 	@Test @Ignore ( "Not a real test, used to verify the performance in rdf2pg" )
 	public void testProcessSelect() throws IOException
 	{
-		var sparql = IOUtils.readFile ( "/Users/brandizi/Documents/Work/RRes/ondex_git/ondex-knet-builder/ondex-knet-builder/modules/neo4j-export/src/main/assembly/resources/ondex_config/concept_rel_types.sparql" );
+		var sparql = Files.readString ( Path.of ( "/Users/brandizi/Documents/Work/RRes/ondex_git/ondex-knet-builder/ondex-knet-builder/modules/neo4j-export/src/main/assembly/resources/ondex_config/concept_rel_types.sparql" ));
 		try ( var helper = new TDBEndPointHelper ( "/tmp/rdf2pg-tdb" ) )
 		{
 			helper.processSelect ( "", sparql, sol -> log.info ( "SOL: {}", sol ) );
