@@ -19,9 +19,11 @@ import org.slf4j.LoggerFactory;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.machinezoo.noexception.Exceptions;
 import com.machinezoo.noexception.throwing.ThrowingRunnable;
 import com.machinezoo.noexception.throwing.ThrowingSupplier;
 
+import uk.ac.ebi.utils.exceptions.ExceptionUtils;
 import uk.ac.ebi.utils.runcontrol.ProgressLogger;
 
 /**
@@ -319,10 +321,19 @@ public abstract class SparqlEndPointHelper
 			return fun.get ();
 		}
 		catch ( IOException ex ) {
-			throw new UncheckedIOException ( "I/O error while working with SPARQL endpoint: " + ex.getMessage (), ex );
+			throw ExceptionUtils.buildEx ( 
+					UncheckedIOException.class, ex, "Error while working with SPARQL endpoint: $cause" 
+			);
 		}
 		catch ( Exception ex ) {
-			throw new RuntimeException ( "Error while working with SPARQL endpoint: " + ex.getMessage (), ex );
+			throw ExceptionUtils.buildEx ( 
+				RuntimeException.class, ex, "Error while working with SPARQL endpoint: $cause" 
+			);
 		}
+		catch ( Throwable ex ) {
+			throw ExceptionUtils.buildEx ( 
+				Error.class, ex, "Error while working with SPARQL endpoint: $cause" 
+			);
+		}	
 	}	
 }

@@ -249,7 +249,7 @@ public class JenaGraphUtils extends GraphUtils<Model, RDFNode, Resource, Propert
 	}
 
 	/**
-	 * Like {@link #doSync(Model, Supplier, boolean)} but without returning any result (which allow you tu 
+	 * Like {@link #doSync(Model, Supplier, boolean)} but without returning any result (which allow you to 
 	 * pass a {@link Runnable}, without any need for a return statement). 
 	 *  
 	 */

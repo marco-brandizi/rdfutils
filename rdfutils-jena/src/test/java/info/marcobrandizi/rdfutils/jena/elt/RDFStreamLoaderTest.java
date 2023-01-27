@@ -107,7 +107,7 @@ public class RDFStreamLoaderTest
 			RDFStreamLoader<Consumer<Model>> loader = new RDFStreamLoader<> ();
 			TDBLoadingHandler handler = new TDBLoadingHandler ( dataSet ); 
 			loader.setBatchJob ( handler );
-			int chunkSize = 100;
+			int chunkSize = 1000;
 			AtomicInteger chunksCount = new AtomicInteger ( 0 );
 			loader.getBatchCollector ().setMaxBatchSize ( chunkSize );
 			loader.setBatchJob ( handler.andThen (

@@ -26,9 +26,8 @@ import uk.ac.ebi.utils.exceptions.TooManyValuesException;
  * @param <P> the type of property node
  * @param <L> the type of literal node
  * 
- * TODO: possibly merge this with the Jena implementation, as explained in rdfutils-commonsrdf's POM, 
- * this multi-framework support has more problems than advantages and I can no longer afford to 
- * maintain it.
+ * TODO: possibly merge this with the Jena implementation. This multi-framework support has more problems 
+ * than advantages and I can no longer afford to maintain it.
  *  
  */
 public abstract class GraphUtils<M, N, R extends N, P extends N, L extends N>

@@ -1,7 +1,14 @@
 # Revision History
 
-## 3.0.1-SNAPSHOT
-* Current snapshot
+*This file was last reviewed on 2023-01-27*
+
+## 4.0.1-SNAPSHOT
+* Just started
+
+## 4.0
+* Apache commons RDF removed.
+* Various dependencies upgraded.
+* Various dependencies factorised in the main POM, to be able to support other dependencies (java2rdf).
 
 ## 3.0 
 * **FROM NOW ON, JDK < 11 IS NO LONGER SUPPORTED**. rdfutils will possibly work with 1.8 for 
