@@ -2,8 +2,11 @@
 
 *This file was last reviewed on 2023-01-31*
 
-## 4.0.3-SNAPSHOT
+## 4.0.4-SNAPSHOT
 * Current snapshop.
+
+## 4.0.3
+* Fixing issue with dependency management.
 
 ## 4.0.2
 * Fixing issue with dependency management.
