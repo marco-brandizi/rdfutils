@@ -116,17 +116,6 @@
 		  	<version>11.0.1</version>
 			</dependency>
 
-			<dependency>
-				<groupId>info.marcobrandizi</groupId>
-				<artifactId>rdfutils-jena</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>info.marcobrandizi</groupId>
-				<artifactId>rdfutils-core</artifactId>
-				<version>${project.version}</version>
-			</dependency>
 
 	  </dependencies>
     
