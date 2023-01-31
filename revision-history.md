@@ -1,9 +1,12 @@
 # Revision History
 
-*This file was last reviewed on 2023-01-27*
+*This file was last reviewed on 2023-01-31*
 
-## 4.0.1-SNAPSHOT
-* Just started
+## 4.0.2-SNAPSHOT
+* Current snapshop.
+
+## 4.0.1
+* Updating jutils dependency.
 
 ## 4.0
 * Apache commons RDF removed.
