@@ -1,9 +1,9 @@
 # Revision History
 
-*This file was last reviewed on 2023-01-31*
+*This file was last reviewed on 2023-03-01*. **Please, keep this note updated**.
 
 ## 4.0.4-SNAPSHOT
-* Current snapshop.
+* Fixing issue with auto-trimming values in checkNonNullTriple().
 
 ## 4.0.3
 * Fixing issue with dependency management.
