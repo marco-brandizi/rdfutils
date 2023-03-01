@@ -157,7 +157,10 @@ public class JenaGraphUtils extends GraphUtils<Model, RDFNode, Resource, Propert
 	public void checkNonNullTriple ( String methodName, String subjectUri, String propertyUri, RDFNode obj )
 	{
 		if ( obj == null )
+		{
 			checkNonNullTriple ( methodName, subjectUri, propertyUri, null, null );
+			return;
+		}
 		
 		String dataTypeStr = obj instanceof Literal 
 			? obj.asLiteral ().getDatatypeURI () 

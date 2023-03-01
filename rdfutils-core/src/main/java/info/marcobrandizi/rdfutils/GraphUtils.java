@@ -260,7 +260,10 @@ public abstract class GraphUtils<M, N, R extends N, P extends N, L extends N>
 	 */
 	public abstract Optional<String> literalDataType ( L literal );
 
-	
+	/**
+	 * Simple wrappers that uses {@link Object#toString()} for all of S/P/O. 
+	 * You probably want to re-implement this in your own framework-specific extension.
+	 */
 	public void checkNonNullTriple ( String methodName, R subj, P prop, N obj )
 	{
 		this.checkNonNullTriple (
@@ -284,6 +287,11 @@ public abstract class GraphUtils<M, N, R extends N, P extends N, L extends N>
 	/**
 	 * Used above to check that we have non-null parameters.
 	 * 
+	 * <b>WARNING/b>: we changed this after 4.0.3, before objectValueOrUri was first {@link StringUtils#trimToNull(String) trimmed} and
+	 * then checked against null/empty values. Now we don't do the trimming operations, since it's impossible to reliably know
+	 * if an invoker actually wants to export values like "" (or "\n") or not. So, this is up to the invoker now, we only check
+	 * that the triple object isn't null.
+	 * 
 	 * @parm methodName is only used for logging.
 	 * 
 	 * @param dataTypeUri is not checked, only used to report error messages and it's the datatype expected for 
@@ -292,7 +300,7 @@ public abstract class GraphUtils<M, N, R extends N, P extends N, L extends N>
 	public void checkNonNullTriple ( String methodName, String subjectUri, String propertyUri, String objectValueOrUri, String dataTypeUri )
 	{
 		if ( StringUtils.trimToNull ( subjectUri ) == null 
-				|| StringUtils.trimToNull ( propertyUri ) == null || StringUtils.trimToNull ( objectValueOrUri ) == null 
+				|| StringUtils.trimToNull ( propertyUri ) == null || objectValueOrUri == null 
 		)
 		{
 			if ( dataTypeUri == null )
