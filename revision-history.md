@@ -1,8 +1,11 @@
 # Revision History
 
-*This file was last reviewed on 2023-03-01*. **Please, keep this note updated**.
+*This file was last reviewed on 2023-03-08*. **Please, keep this note updated**.
 
-## 4.0.4-SNAPSHOT
+## 4.1.1-SNAPSHOT
+* Current snapshot
+
+## 4.1
 * Fixing issue with auto-trimming values in checkNonNullTriple().
 
 ## 4.0.3
