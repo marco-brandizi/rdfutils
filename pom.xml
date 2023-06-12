@@ -123,7 +123,7 @@
 			
 	      <plugin>
 		      <artifactId>maven-compiler-plugin</artifactId>
-		      <version>3.10.1</version>
+		      <version>3.11.0</version>
 		      
 		      <configuration>
 		        <source>11</source>
@@ -134,7 +134,7 @@
 		
 		    <plugin>
 			    <artifactId>maven-source-plugin</artifactId>
-			    <version>3.2.1</version>
+			    <version>3.3.0</version>
 			    
 			    <executions>
 			      <execution>
@@ -149,7 +149,7 @@
 			  <plugin>
 			    <groupId>org.apache.maven.plugins</groupId>
 			    <artifactId>maven-surefire-plugin</artifactId>
-			    <version>3.0.0-M8</version>
+			    <version>3.1.2</version>
 			    
 			    <configuration>
 			      <properties>
@@ -161,6 +161,12 @@
 			       </properties>
 			    </configuration>
 			  </plugin>
+			  
+				<plugin>
+				  <groupId>org.apache.maven.plugins</groupId>
+				  <artifactId>maven-resources-plugin</artifactId>
+				  <version>3.3.1</version>
+				</plugin>
 			
 	    </plugins>		
 		
@@ -170,10 +176,11 @@
 	
 	
   <repositories>
-		    
+		
+		<!-- TODO: requires a common POM --> 
     <repository>
-    	<id>mbrandizi.jfrog.io</id>
-			<url>https://mbrandizi.jfrog.io/artifactory/maven</url>
+    	<id>marcobrandizi.info</id>
+			<url>https://artifactory.marcobrandizi.info/public</url>
 	    <snapshots><enabled>true</enabled></snapshots>
 	    <releases><enabled>true</enabled></releases>
     </repository>
