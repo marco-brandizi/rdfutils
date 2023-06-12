@@ -107,7 +107,7 @@
 			<dependency>
 			  <groupId>uk.ac.ebi</groupId>
 			  <artifactId>jutils</artifactId>
-		  	<version>11.0.1</version>
+		  	<version>11.1</version>
 			</dependency>
 
 
@@ -189,7 +189,30 @@
 
 
 	<distributionManagement>
+	
+    <snapshotRepository>
+    	<id>marcobrandizi.info</id>
+			<url>https://artifactory.marcobrandizi.info/public</url>
+    </snapshotRepository>
 
+    <repository>
+    	<id>marcobrandizi.info</id>
+			<url>https://artifactory.marcobrandizi.info/public</url>
+    </repository>
+
+<!-- TODO: test
+    <snapshotRepository>
+    	<id>marcobrandizi.info</id>
+			<url>http://localhost:8100/public</url>
+    </snapshotRepository>
+
+    <repository>
+    	<id>marcobrandizi.info</id>
+			<url>http://localhost:8100/public</url>
+     </repository>
+-->
+
+<!-- TODO: remove?
     <snapshotRepository>
     	<id>mbrandizi.jfrog.io</id>
 			<url>https://mbrandizi.jfrog.io/artifactory/maven</url>
@@ -198,8 +221,9 @@
     <repository>
     	<id>mbrandizi.jfrog.io</id>
 			<url>https://mbrandizi.jfrog.io/artifactory/maven</url>
-    </repository>
-		
+    </repository>	
+-->
+
 	</distributionManagement>
 
   <modules>
