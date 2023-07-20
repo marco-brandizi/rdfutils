@@ -2,7 +2,7 @@
 
 *This file was last reviewed on 2023-07-20*. **Please, keep this note updated**.
 
-## 4.2
+## 5.0-SNAPSHOT
 * **WARNING**: Maven repository migrated to [my personal artifactory](https://artifactory.marcobrandizi.info/#/public).
 * Migrated to Java 17. **WARNING: no backward compatibility guaranteed**.
 
