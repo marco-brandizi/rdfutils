@@ -107,7 +107,7 @@
 			<dependency>
 			  <groupId>uk.ac.ebi</groupId>
 			  <artifactId>jutils</artifactId>
-		  	<version>12.0-SNAPSHOT</version>
+		  	<version>12.0</version>
 			</dependency>
 
 
