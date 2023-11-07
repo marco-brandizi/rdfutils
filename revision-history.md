@@ -6,7 +6,7 @@
 * Current snapshot.
 
 
-## 5.0.2
+## 5.0.1
 * Various dependencies upgraded.
 
 
