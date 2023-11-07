@@ -1,9 +1,11 @@
 # Revision History
 
-*This file was last reviewed on 2023-07-26*. **Please, keep this note updated**.
+*This file was last reviewed on 2023-11-07*. **Please, keep this note updated**.
 
-## 5.0.1-SNAPSHOT
-* Current snapshot 
+## 5.0.2-SNAPSHOT
+
+## 5.0.2
+* Various dependencies upgraded.
 
 ## 5.0
 * **WARNING**: Maven repository migrated to [my personal artifactory](https://artifactory.marcobrandizi.info/#/public).
