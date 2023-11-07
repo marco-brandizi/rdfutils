@@ -3,7 +3,7 @@
 *This file was last reviewed on 2023-11-07*. **Please, keep this note updated**.
 
 ## 5.0.2-SNAPSHOT
-* Current snapshot.
+* README upgraded (to reflect the removal of CommonsRDF).
 
 
 ## 5.0.1
