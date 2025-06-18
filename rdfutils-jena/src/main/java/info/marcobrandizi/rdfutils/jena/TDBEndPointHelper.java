@@ -103,11 +103,14 @@ public class TDBEndPointHelper extends SparqlEndPointHelper implements AutoClose
 	 * You need to {@link #open(String) open the TDB} before this.
 	 */
 	@Override
-	public QueryExecution getQueryExecutor ( Query query )
+	public QueryExecution getQueryExecutor ( Query query, QuerySolutionMap params )
 	{
-		return QueryExecutionFactory.create ( query, this.getDataSet() );
+		return QueryExecution.dataset ( this.getDataSet () )
+			.query ( query )
+			.substitution ( params )
+			.build ();
 	}
-	
+
 	/**
 	 * This returns the Jena {@link Dataset} corresponding to the TDB triple store at {@link #getTdbPath()} that was 
 	 * opened by {@link #open(String)}. 

@@ -2,7 +2,10 @@ package info.marcobrandizi.rdfutils.jena;
 
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;
+import org.apache.jena.query.QueryExecutionBuilder;
+import org.apache.jena.query.QueryExecutionDatasetBuilder;
 import org.apache.jena.query.QueryExecutionFactory;
+import org.apache.jena.query.QuerySolutionMap;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 
@@ -32,9 +35,12 @@ public class ModelEndPointHelper extends SparqlEndPointHelper
 
 
 	@Override
-	public QueryExecution getQueryExecutor ( Query query )
+	public QueryExecution getQueryExecutor ( Query query, QuerySolutionMap params )
 	{
-		return QueryExecutionFactory.create ( query, model );
+		return QueryExecution.model ( model )
+			.query ( query )
+			.substitution ( params )
+			.build ();
 	}
 
 	public Model getModel ()

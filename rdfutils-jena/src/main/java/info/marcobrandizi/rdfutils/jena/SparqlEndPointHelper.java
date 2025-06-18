@@ -19,7 +19,6 @@ import org.slf4j.LoggerFactory;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.machinezoo.noexception.Exceptions;
 import com.machinezoo.noexception.throwing.ThrowingRunnable;
 import com.machinezoo.noexception.throwing.ThrowingSupplier;
 
@@ -124,7 +123,7 @@ public abstract class SparqlEndPointHelper
 	
 	public Model construct ( Query sparqlConstruct, Model initialModel, QuerySolutionMap params )
 	{
-		return processConstruct ( sparqlConstruct, v -> {}, initialModel, params );
+		return processConstruct ( sparqlConstruct, v -> {/**/}, initialModel, params );
 	}
 	
 	public Model construct ( Query sparqlConstruct, Model initialModel )
@@ -139,7 +138,7 @@ public abstract class SparqlEndPointHelper
 	
 	public Model construct ( String sparqlConstruct, Model initialModel, QuerySolutionMap params )
 	{
-		return processConstruct ( sparqlConstruct, v -> {}, initialModel, params );
+		return processConstruct ( sparqlConstruct, v -> {/**/}, initialModel, params );
 	}
 	
 	public Model construct ( String sparqlConstruct, Model initialModel )
@@ -226,10 +225,8 @@ public abstract class SparqlEndPointHelper
 		Query sparqlConstruct, Consumer<Model> action, Model initialModel, QuerySolutionMap params 
 	)
 	{
-		try ( QueryExecution qx = getQueryExecutor ( sparqlConstruct ) )
+		try ( QueryExecution qx = getQueryExecutor ( sparqlConstruct, params ) )
 		{
-			if ( params != null ) qx.setInitialBinding ( params );
-		
 			Model result = initialModel == null ? qx.execConstruct () : qx.execConstruct ( initialModel );
 			action.accept ( result );
 			return result;
@@ -283,20 +280,19 @@ public abstract class SparqlEndPointHelper
 		return queryCache.getUnchecked ( sparql );
 	}
 	
+	public QueryExecution getQueryExecutor ( Query query )
+	{
+		return getQueryExecutor ( query, null );
+	}
+	
 	/**
 	 * Gets a Jena {@link QueryExecution} handler, based on the type of data source that the specific implementation 
 	 * of this helper manages (e.g., {@link Model}, TDB, remote HTTP endpoint).
 	 * 
+	 * @param params initial bindings for parameterised queries. Ignored if null.
+	 * 
 	 */
-	public abstract QueryExecution getQueryExecutor ( Query query );
-	
-	
-	public QueryExecution getQueryExecutor ( Query query, QuerySolutionMap params )
-	{
-		var qx = getQueryExecutor ( query );
-		if ( params != null ) qx.setInitialBinding ( params );
-		return qx;
-	}
+	public abstract QueryExecution getQueryExecutor ( Query query, QuerySolutionMap params );
 
 	public QueryExecution getQueryExecutor ( String query, QuerySolutionMap params )
 	{
