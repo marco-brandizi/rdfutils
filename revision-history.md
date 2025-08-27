@@ -1,8 +1,12 @@
 # Revision History
 
-*This file was last reviewed on 2025-06-19*. **Please, keep this note updated**.
+*This file was last reviewed on 2025-08-27*. **Please, keep this note updated**.
 
-## 6.0-SNAPSHOT
+## 6.0.1-SNAPSHOT
+* Current snapshot.
+
+
+## 6.0
 * README upgraded (to reflect the removal of CommonsRDF).
 * Jena upgraded to 5.4.0
 
