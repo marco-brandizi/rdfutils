@@ -11,6 +11,7 @@
 * Jena upgraded to 5.4.0
 * Java migrated to 21. **Previous JDKs not supported anymore**
 * Various dependency upgrades.
+* Migration to v2 CI scripts.
 
 
 ## 5.0.1
