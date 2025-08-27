@@ -9,6 +9,7 @@
 ## 6.0
 * README upgraded (to reflect the removal of CommonsRDF).
 * Jena upgraded to 5.4.0
+* Java migrated to 21. **Previous JDKs not supported anymore**
 * Various dependency upgrades.
 
 
