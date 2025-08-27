@@ -9,6 +9,7 @@
 ## 6.0
 * README upgraded (to reflect the removal of CommonsRDF).
 * Jena upgraded to 5.4.0
+* Various dependency upgrades.
 
 
 ## 5.0.1
