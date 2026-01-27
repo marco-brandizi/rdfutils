@@ -4,13 +4,13 @@
 
 : ${VIRTUOSO_USER:=dba}
 : ${VIRTUOSO_PASSWORD:=dba}
-: ${VIRTUOSO_BIN_DIR:=/usr/local/bin}
+: ${VIRTUOSO_ISQL:=isql}
 
 # Number of parallel jobs that can be sent to Virtuoso commands. Used with rdf_loader_run() and similar cases
 #
 : ${VIRTUOSO_JOBS:=10}
 
-export VIRTUOSO_BIN_DIR VIRTUOSO_USER VIRT_PASSWORD
+export VIRTUOSO_ISQL VIRTUOSO_USER VIRT_PASSWORD
 
 # This is used in scripts that invoke SPARQL endpoints
 export WGET_OPTS='--no-check-certificate --user='foo' --password='changeme''
@@ -34,7 +34,7 @@ fi
 if [[ -z "`type -t isql_wrapper`" ]]; then
 	function isql_wrapper
 	{
-  	$VIRTUOSO_BIN_DIR/isql 1111 $VIRTUOSO_USER $VIRTUOSO_PASSWORD exec="$@"
+  	"$VIRTUOSO_ISQL" 1111 $VIRTUOSO_USER $VIRTUOSO_PASSWORD exec="$@"
 	}
 fi
 
